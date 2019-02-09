@@ -1,0 +1,9 @@
+<h1>売り上げ入力</h1>
+
+<%= form_tag(earning_earn_path(id:current_user.id), method: :post) do%>
+<%= number_field_tag :revenue%>円
+<%= submit_tag "決定" %>
+<%end%>
+
+<%=link_to "ホームへ",home_index_path(id:current_user.id)%>
+<%=link_to "勤怠管理へ",attendance_index_path(id:current_user.id)%>

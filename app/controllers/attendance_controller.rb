@@ -1,4 +1,5 @@
 class AttendanceController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_user, only: [:show, :index,:in_time,:out_time]
   before_action :set_time, only: [:in_time, :out_time]
   def index
@@ -13,7 +14,7 @@ class AttendanceController < ApplicationController
   end
 
   def out_time
-    Attendance.create!(user_id:@user.id,out_time:@time)
+    Attendance.where(user_id:@user.id).last.update!(out_time:@time)
     redirect_to attendance_index_path(@user.id)
   end
 
