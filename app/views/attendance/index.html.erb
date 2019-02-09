@@ -1,0 +1,9 @@
+<h1>勤怠管理</h1>
+<h3><%= @user.username%> </h3>
+
+<%= button_to "出勤",attendance_in_time_path(id:current_user.id), {method: :post} %>
+<%= button_to "退勤",attendance_out_time_path(id:current_user.id), {method: :post} %>
+
+
+
+<%=link_to "ホームへ",home_index_path%>
