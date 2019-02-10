@@ -1,7 +1,7 @@
 <h1>管理者ホーム</h1>
 <h2>ようこそ<%=current_user.username%>さん</h2>
 
-<h2>社員リスト</h2>
+<h2>従業員リスト</h2>
 <% @employees.each do |employee| %>
     <%= link_to employee.username,admin_show_path(id:employee.id)%>
     <%= link_to "勤怠",admin_attendance_path(id:employee.id)%>

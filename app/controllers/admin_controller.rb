@@ -15,7 +15,7 @@ class AdminController < ApplicationController
   end
 
   def earning
-    @earnings=Earning.all
+    @earnings=Earning.where(user_id:@employee.id)
   end
 
   private
