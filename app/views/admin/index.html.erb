@@ -4,7 +4,7 @@
 <h2>従業員リスト</h2>
 <% @employees.each do |employee| %>
     <%= link_to employee.username,admin_show_path(id:employee.id)%>
-    <%= link_to "勤怠",admin_attendance_path(id:employee.id)%>
+    <%= link_to "勤怠管理",admin_attendance_path(id:employee.id)%>
     <%= link_to "売り上げ",admin_earning_path(id:employee.id)%> <br>
 <% end %>
 

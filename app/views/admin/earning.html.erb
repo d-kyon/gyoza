@@ -1,6 +1,7 @@
 <h1><%=@employee.username%>の売り上げ管理</h1>
 <% @earnings.each do |earning| %>
     <p>日程　<%=earning.date.try(:strftime, "%Y年%-m月%-d日(#{%w(日 月 火 水 木 金 土)[earning.date.wday]})")%></p>
+    <p>場所　<%=earning.location%></p>
     <p>売り上げ金　<%=earning.revenue%>円</p>
     <br>
 <% end %>
