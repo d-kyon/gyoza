@@ -1,4 +1,10 @@
 <h1><%=@employee.username%>の勤怠管理</h1>
+<%= form_tag(admin_attendance_between_path(id:@employee.id), method: :post) do%>
+<%= date_field_tag :from%>日から
+<%= date_field_tag :to%>日まで
+<%= submit_tag "検索" %>
+<%end%>
+
 <% @attendances.each do |attendance| %>
     <p>
       出勤　<%=attendance.in_time.try(:strftime, "%Y年%-m月%-d日(#{%w(日 月 火 水 木 金 土)[attendance.in_time.wday]}) %H:%M:%S")%>

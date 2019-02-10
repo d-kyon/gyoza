@@ -1,6 +1,6 @@
 class AdminController < ApplicationController
   before_action :set_user
-  before_action :set_employee,only: [:show,:attendance,:earning]
+  before_action :set_employee,only: [:show,:attendance,:earning,:earning_between,:attendance_between]
   before_action :authenticate_user!
   before_action :authenticate_admin!
   def index
@@ -11,11 +11,25 @@ class AdminController < ApplicationController
   end
 
   def attendance
-    @attendances=Attendance.where(user_id:@employee.id)
+    if !@attendances then
+      @attendances=Attendance.where(user_id:@employee.id)
+    end
+  end
+
+  def attendance_between
+    @attendances=Attendance.where(user_id:@employee.id).date_between(params[:from], params[:to])
+    render action: :attendance
   end
 
   def earning
-    @earnings=Earning.where(user_id:@employee.id)
+    if !@earnings then
+      @earnings=Earning.where(user_id:@employee.id)
+    end
+  end
+
+  def earning_between
+    @earnings=Earning.where(user_id:@employee.id).date_between(params[:from], params[:to])
+    render action: :earning
   end
 
   private
