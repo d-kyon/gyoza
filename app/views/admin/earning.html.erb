@@ -1,0 +1,11 @@
+<h1>売り上げ管理</h1>
+
+<%if current_user.id==params[:id].to_i then%>
+<p>管理者の</p>
+<%else%>
+<p>社員の</p>
+<%end%>
+
+
+
+<%=link_to "ホームへ",home_index_path%>

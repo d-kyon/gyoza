@@ -1,5 +1,6 @@
 class AttendanceController < ApplicationController
   before_action :authenticate_user!
+  before_action :authenticate_current_user!
   before_action :set_user, only: [:show, :index,:in_time,:out_time]
   before_action :set_time, only: [:in_time, :out_time]
   def index
@@ -24,6 +25,11 @@ class AttendanceController < ApplicationController
   end
   def set_time
     @time=Time.now+9*60*60
+  end
+  def authenticate_current_user!
+    if current_user.id!=params[:id].to_i then
+      redirect_to home_index_path
+    end
   end
 
 end

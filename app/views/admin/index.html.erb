@@ -1,0 +1,10 @@
+<h1>管理者ホーム</h1>
+<h2>ようこそ<%=current_user.username%>さん</h2>
+
+<h2>管理</h2>
+<%=link_to "勤怠管理へ",admin_attendance_path(id:current_user.id)%>
+<%=link_to "売り上げ管理へ",admin_earning_path(id:current_user.id)%>
+
+<h2><%=current_user.username%>さんの情報の入力</h2>
+<%=link_to "勤怠入力へ",attendance_index_path(id:current_user.id)%>
+<%=link_to "売り上げ入力へ",earning_index_path(id:current_user.id)%>

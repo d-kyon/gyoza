@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  get 'admin/index'
+  get 'admin/show/:id' => 'admin#show',as:'admin_show'
+  get 'admin/attendance/:id' => 'admin#attendance',as:'admin_attendance'
+  get 'admin/earning/:id' => 'admin#earning',as:'admin_earning'
   get 'earning/index/:id' => 'earning#index',as:'earning_index'
   get 'earning/show' => 'earning#show',as:'earning_show'
   post 'earning/earn'
