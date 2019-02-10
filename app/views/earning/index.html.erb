@@ -1,7 +1,8 @@
 <h1>売り上げ入力</h1>
 
 <%= form_tag(earning_earn_path(id:current_user.id), method: :post) do%>
-<%= number_field_tag :revenue%>円
+売り上げ<%= number_field_tag :revenue%>円 <br>
+場所<%= text_field_tag :location%>
 <%= submit_tag "決定" %>
 <%end%>
 

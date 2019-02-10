@@ -10,7 +10,7 @@ class EarningController < ApplicationController
 
   def earn
     date=Date.today
-    Earning.create!(user_id:@user.id,revenue:params[:revenue],date:date)
+    Earning.create!(user_id:@user.id,revenue:params[:revenue],date:date,location:params[:location])
     redirect_to earning_index_path(@user.id)
   end
 
