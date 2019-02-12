@@ -5,6 +5,8 @@
 <%= number_field_tag :month,@month%>月
 <%= submit_tag "検索" %>
 <%end%>
+<h2>勤務時間合計</h2>
+<%=sum_working_hour(@attendances)%>
 <h2>勤怠管理</h2>
 <% @attendances.each do |attendance| %>
     <p>
@@ -24,6 +26,8 @@
     <br>
 <% end %>
 
+<h2>売り上げ合計</h2>
+<%=sum_earning(@earnings)円%>
 <h2>売り上げ</h2>
 <% @earnings.each do |earning| %>
     <p>日程　<%=earning.date.try(:strftime, "%Y年%-m月%-d日(#{%w(日 月 火 水 木 金 土)[earning.date.wday]})")%></p>
