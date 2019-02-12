@@ -27,7 +27,7 @@
 <% end %>
 
 <h2>売り上げ合計</h2>
-<%=sum_earning(@earnings)円%>
+<%=sum_earning(@earnings)%>円
 <h2>売り上げ</h2>
 <% @earnings.each do |earning| %>
     <p>日程　<%=earning.date.try(:strftime, "%Y年%-m月%-d日(#{%w(日 月 火 水 木 金 土)[earning.date.wday]})")%></p>
