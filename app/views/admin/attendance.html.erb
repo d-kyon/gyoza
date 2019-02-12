@@ -1,7 +1,7 @@
 <h1><%=@employee.username%>の勤怠管理</h1>
-<%= form_tag(admin_attendance_between_path(id:@employee.id), method: :post) do%>
-<%= date_field_tag :from%>日から
-<%= date_field_tag :to%>日まで
+<%= form_tag(admin_attendance_search_month_path(id:@employee.id), method: :post) do%>
+<%= number_field_tag :year,@year%>年
+<%= number_field_tag :month,@month%>月
 <%= submit_tag "検索" %>
 <%end%>
 

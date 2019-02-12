@@ -5,10 +5,12 @@ Rails.application.routes.draw do
   get 'admin/show/:id' => 'admin#show',as:'admin_show'
   get 'admin/attendance/:id' => 'admin#attendance',as:'admin_attendance'
   get 'admin/earning/:id' => 'admin#earning',as:'admin_earning'
-  post 'admin/earning_between'
-  get 'admin/earning_between'
-  post 'admin/attendance_between'
-  get 'admin/attendance_between'
+  post 'admin/earning_search_month'
+  get 'admin/earning_search_month'
+  post 'admin/attendance_search_month'
+  get 'admin/attendance_search_month'
+  post 'admin/search_month'
+  get 'admin/search_month'
 
   #earning
   get 'earning/index/:id' => 'earning#index',as:'earning_index'

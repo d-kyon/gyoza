@@ -9,9 +9,11 @@ class Earning < ApplicationRecord
   end
 }
 scope :date_month, -> year, month {
-  from = Date.new(year,month)
-  one_month_later = from>>1
-  to=one_month_later-1
-  where(in_time: from..to)
+  if year.present? && month.present?
+    from = Date.new(year.to_i,month.to_i)
+    one_month_later = from>>1
+    to=one_month_later-1
+    where(date: from..to)
+  end
 }
 end
