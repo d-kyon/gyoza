@@ -1,2 +1,35 @@
-<h1><%=@employee.username%></h1>
+<h1><%=@employee.username%>さん<%=%>のまとめ</h1>
+
+<%= form_tag(admin_search_month_path(id:@employee.id), method: :post) do%>
+<%= number_field_tag :year,@year%>年
+<%= number_field_tag :month,@month%>月
+<%= submit_tag "検索" %>
+<%end%>
+<h2>勤怠管理</h2>
+<% @attendances.each do |attendance| %>
+    <p>
+      出勤　<%=attendance.in_time.try(:strftime, "%Y年%-m月%-d日(#{%w(日 月 火 水 木 金 土)[attendance.in_time.wday]}) %H:%M:%S")%>
+    </p>
+
+      <%if attendance.out_time.nil?%>
+      <p>出勤中</p>
+      <p>出勤時間</p>
+      <%else%>
+      <p>退勤　<%=attendance.out_time.try(:strftime, "%Y年%-m月%-d日(#{%w(日 月 火 水 木 金 土)[attendance.out_time.wday]}) %H:%M:%S")%></p>
+      <p>
+        出勤時間　<%=working_hour(attendance.in_time,attendance.out_time)%>
+      </p>
+      <%end%>
+
+    <br>
+<% end %>
+
+<h2>売り上げ</h2>
+<% @earnings.each do |earning| %>
+    <p>日程　<%=earning.date.try(:strftime, "%Y年%-m月%-d日(#{%w(日 月 火 水 木 金 土)[earning.date.wday]})")%></p>
+    <p>場所　<%=earning.location%></p>
+    <p>売り上げ金　<%=earning.revenue%>円</p>
+    <br>
+<% end %>
+
 <%=link_to "ホームへ",home_index_path%>
