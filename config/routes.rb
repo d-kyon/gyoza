@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  root 'home#index'
 
   #admin
   get 'admin/index'
@@ -24,8 +25,10 @@ Rails.application.routes.draw do
   post 'attendance/out_time'
 
   #home
-  root 'home#index'
   get 'home/index'
+  get 'home/search_month'
+  post 'home/search_month'
+
   devise_for :users
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
