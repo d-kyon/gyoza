@@ -1,3 +1,10 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Geolocation Sample</title>
+</head>
+<body>
 <h1>売り上げ入力</h1>
 
 <%= form_tag(earning_earn_path(id:current_user.id), method: :post) do%>
@@ -8,3 +15,26 @@
 
 <%=link_to "ホームへ",home_index_path(id:current_user.id)%>
 <%=link_to "勤怠管理へ",attendance_index_path(id:current_user.id)%>
+<ul id="location">ああああ</ul>
+
+<script type="text/javascript">
+    if (navigator.geolocation) {
+        // 現在の位置情報取得を実施
+        navigator.geolocation.getCurrentPosition(
+        // 位置情報取得成功時
+        function (pos) {
+                var location ="<li>"+"緯度：" + pos.coords.latitude + "</li>";
+                location += "<li>"+"経度：" + pos.coords.longitude + "</li>";
+                document.getElementById("location").innerHTML = location;
+        },
+        // 位置情報取得失敗時
+        function (pos) {
+                var location ="<li>位置情報が取得できませんでした。</li>";
+                document.getElementById("location").innerHTML = location;
+        });
+    } else {
+        window.alert("本ブラウザではGeolocationが使えません");
+    }
+</script>
+</body>
+</html>
