@@ -11,11 +11,13 @@ class AttendanceController < ApplicationController
 
   def in_time
     Attendance.create!(user_id:@user.id,in_time:@time)
+    flash[:notice] = "出勤しました"
     redirect_to attendance_index_path(@user.id)
   end
 
   def out_time
     Attendance.where(user_id:@user.id).last.update!(out_time:@time)
+    flash[:notice] = "退勤しました"
     redirect_to attendance_index_path(@user.id)
   end
 

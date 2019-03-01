@@ -1,14 +1,33 @@
-<h1><%=@employee.username%>の売り上げ管理</h1>
+<h1 style="margin-top:100px;"><%=@employee.username%>の売り上げ管理</h1>
 <%= form_tag(admin_earning_search_month_path(id:@employee.id), method: :post) do%>
 <%= number_field_tag :year,@year%>年
 <%= number_field_tag :month,@month%>月
 <%= submit_tag "検索" %>
 <%end%>
 
-<% @earnings.each do |earning| %>
-    <p>日程　<%=earning.date.try(:strftime, "%Y年%-m月%-d日(#{%w(日 月 火 水 木 金 土)[earning.date.wday]})")%></p>
-    <p>場所　<%=earning.location%></p>
-    <p>売り上げ金　<%=earning.revenue%>円</p>
-    <br>
-<% end %>
-<%=link_to "ホームへ",home_index_path%>
+<h2>売り上げ</h2>
+<div class="row">
+  <% @earnings.each do |earning| %>
+  <div class="col-sm-12  col-md-6">
+    <div class="card bg-light mb-3">
+      <div class="card-header"><%=earning.date.try(:strftime, "%Y年%-m月%-d日(#{%w(日 月 火 水 木 金 土)[earning.date.wday]})")%></div>
+      <div class="card-body">
+        <table class="table table-striped" style="margin-top:50px;">
+          <tbody>
+            <tr>
+              <th scope="row">場所</th>
+              <td><%=earning.location%></td>
+            </tr>
+            <tr>
+              <th scope="row">売上</th>
+              <td><%=earning.revenue%>円</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <% end %>
+</div>
+<%= link_to "月ごとまとめ",admin_show_path(id:@employee.id),class:"btn btn-primary btn-sm"%>
+<%= link_to "勤怠管理",admin_attendance_path(id:@employee.id),class:"btn btn-secondary btn-sm"%>

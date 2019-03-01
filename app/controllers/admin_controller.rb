@@ -1,6 +1,8 @@
 class AdminController < ApplicationController
   before_action :set_user
-  before_action :set_employee,only: [:show,:attendance,:earning,:earning_between,:attendance_between,:search_month]
+  before_action :set_employee,only: [:show,:attendance,:earning,:earning_between,
+                                      :attendance_between,:search_month,
+                                      :attendance_search_month ,:earning_search_month]
   before_action :authenticate_user!
   before_action :authenticate_admin!
   def index
@@ -8,19 +10,21 @@ class AdminController < ApplicationController
   end
 
   def show
+  @year=Date.today.year
+  @month=Date.today.month
     if !@attendances then
-      @attendances=Attendance.where(user_id:@employee.id).order(:in_time)
+      @attendances=Attendance.where(user_id:@employee.id).date_month(@year,@month).order(:in_time)
     end
     if !@earnings then
-      @earnings=Earning.where(user_id:@employee.id).order(:date)
+      @earnings=Earning.where(user_id:@employee.id).date_month(@year,@month).order(:date)
     end
-    @year=Date.today.year
-    @month=Date.today.month
   end
 
   def attendance
+    @year=Date.today.year
+    @month=Date.today.month
     if !@attendances then
-      @attendances=Attendance.where(user_id:@employee.id).order(:in_time)
+      @attendances=Attendance.where(user_id:@employee.id).date_month(@year,@month).order(:in_time)
     end
   end
 
@@ -40,8 +44,10 @@ class AdminController < ApplicationController
   end
 
   def earning
+    @year=Date.today.year
+    @month=Date.today.month
     if !@earnings then
-      @earnings=Earning.where(user_id:@employee.id).order(:date)
+      @earnings=Earning.where(user_id:@employee.id).date_month(@year,@month).order(:date)
     end
   end
 
