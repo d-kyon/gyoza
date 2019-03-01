@@ -11,6 +11,7 @@ class EarningController < ApplicationController
   def earn
     date=Date.today
     Earning.create!(user_id:@user.id,revenue:params[:revenue],date:date,location:params[:location])
+    flash[:notice] = "売上入力完了しました"
     redirect_to earning_index_path(@user.id)
   end
 

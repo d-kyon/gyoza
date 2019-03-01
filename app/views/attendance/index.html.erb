@@ -1,13 +1,7 @@
-<h1>勤怠管理</h1>
-<h3>ようこそ<%= @user.username%>さん！</h3>
+<h1 style="margin-top:100px;">出勤、退勤</h1>
 
 <%if is_working(@user) then%>
-<%= button_to "退勤",attendance_out_time_path(id:current_user.id), {method: :post} %>
+<%= button_to "退勤",attendance_out_time_path(id:current_user.id), method: :post,class:"btn btn-success attendance_btn"  %>
 <%else%>
-<%= button_to "出勤",attendance_in_time_path(id:current_user.id), {method: :post} %>
+<%= button_to "出勤",attendance_in_time_path(id:current_user.id), method: :post,class:"btn btn-success attendance_btn" %>
 <%end%>
-
-
-
-<%=link_to "ホームへ",home_index_path%>
-<%=link_to "売り上げへ",earning_index_path%>

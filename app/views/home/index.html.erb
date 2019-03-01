@@ -1,4 +1,4 @@
-<h1>ホーム</h1>
+<h1 style="margin-top:100px;">ホーム</h1>
 <%= form_tag(home_search_month_path(id:@user.id), method: :post) do%>
 <%= number_field_tag :year,@year%>年
 <%= number_field_tag :month,@month%>月
@@ -7,34 +7,63 @@
 
 <h2>勤務時間合計</h2>
 <%=sum_working_hour(@attendances)%>
+
 <h2>勤務</h2>
-<% @attendances.each do |attendance| %>
-    <p>
-      出勤　<%=attendance.in_time.try(:strftime, "%Y年%-m月%-d日(#{%w(日 月 火 水 木 金 土)[attendance.in_time.wday]}) %H:%M:%S")%>
-    </p>
+<div class="row">
+  <% @attendances.each do |attendance| %>
+  <div class="col-sm-12  col-md-6">
+    <div class="card bg-light mb-3">
+      <div class="card-header"><%=attendance.in_time.try(:strftime, "%Y年%-m月%-d日(#{%w(日 月 火 水 木 金 土)[attendance.in_time.wday]})")%></div>
+      <div class="card-body">
 
-      <%if attendance.out_time.nil?%>
-      <p>出勤中</p>
-      <p>出勤時間</p>
-      <%else%>
-      <p>退勤　<%=attendance.out_time.try(:strftime, "%Y年%-m月%-d日(#{%w(日 月 火 水 木 金 土)[attendance.out_time.wday]}) %H:%M:%S")%></p>
-      <p>
-        出勤時間　<%=working_hour(attendance.in_time,attendance.out_time)%>
-      </p>
-      <%end%>
+        <div class="row attendance" style="margin-bottom:30px;">
+          <div class="col-sm-12 col-md-6 attendance-border">
+            <div class="attendance_title">出勤</div>
+            <div class="attendance_time">
+              <%=attendance.in_time.try(:strftime, "%H時%M分%S秒")%>
+            </div>
+          </div>
+          <div class="col-sm-12 col-md-6 attendance-border">
+            <div class="attendance_title">退勤</div>
+            <div class="attendance_time">
+              <%=attendance.out_time.try(:strftime, "%H時%M分%S秒")%>
+            </div>
+          </div>
+        </div>
+        <div style="text-align:center;">
+          出勤時間　<%=working_hour(attendance.in_time,attendance.out_time)%>
+        </div>
+      </div>
+    </div>
+  </div>
+  <% end %>
 
-    <br>
-<% end %>
+</div>
 
 <h2>売り上げ合計</h2>
-<h2><%=sum_earning(@earnings)%></h2>
+<h2><%=sum_earning(@earnings)%>円</h2>
 
 <h2>売り上げ</h2>
-<% @earnings.each do |earning| %>
-    <p>日程　<%=earning.date.try(:strftime, "%Y年%-m月%-d日(#{%w(日 月 火 水 木 金 土)[earning.date.wday]})")%></p>
-    <p>場所　<%=earning.location%></p>
-    <p>売り上げ金　<%=earning.revenue%>円</p>
-    <br>
-<% end %>
-<%=link_to "勤怠入力へ",attendance_index_path(id:current_user.id)%>
-<%=link_to "売り上げ入力へ",earning_index_path(id:current_user.id)%>
+<div class="row">
+  <% @earnings.each do |earning| %>
+  <div class="col-sm-12  col-md-6">
+    <div class="card bg-light mb-3">
+      <div class="card-header"><%=earning.date.try(:strftime, "%Y年%-m月%-d日(#{%w(日 月 火 水 木 金 土)[earning.date.wday]})")%></div>
+      <div class="card-body">
+        <table class="table table-striped" style="margin-top:50px;">
+          <tbody>
+            <tr>
+              <th scope="row">場所</th>
+              <td><%=earning.location%></td>
+            </tr>
+            <tr>
+              <th scope="row">売上</th>
+              <td><%=earning.revenue%>円</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <% end %>
+</div>
