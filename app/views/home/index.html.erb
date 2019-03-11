@@ -5,10 +5,28 @@
 <%= submit_tag "検索" %>
 <%end%>
 
-<h2>勤務時間合計</h2>
-<%=sum_working_hour(@attendances)%>
+<table class="table table-striped" style="margin-top:50px;">
+  <tbody>
+    <tr>
+      <th scope="row">勤務時間合計</th>
+      <td><%=sum_working_hour(@attendances)%></td>
+    </tr>
+    <tr>
+      <th scope="row">売上合計</th>
+      <td><%=sum_earning(@earnings)%>円</td>
+    </tr>
+    <tr>
+      <th scope="row">費用合計</th>
+      <td><%=sum_cost(@earnings)%>円</td>
+    </tr>
+    <tr>
+      <th scope="row">利益</th>
+      <td><%=sum_earning(@earnings)-sum_cost(@earnings)%>円</td>
+    </tr>
+  </tbody>
+</table>
 
-<h2>勤務</h2>
+<h2>勤務詳細</h2>
 <div class="row">
   <% @attendances.each do |attendance| %>
   <div class="col-sm-12  col-md-6">
@@ -40,10 +58,7 @@
 
 </div>
 
-<h2>売り上げ合計</h2>
-<h2><%=sum_earning(@earnings)%>円</h2>
-
-<h2>売り上げ</h2>
+<h2>売上詳細</h2>
 <div class="row">
   <% @earnings.each do |earning| %>
   <div class="col-sm-12  col-md-6">
@@ -58,6 +73,10 @@
             </tr>
             <tr>
               <th scope="row">売上</th>
+              <td><%=earning.revenue%>円</td>
+            </tr>
+            <tr>
+              <th scope="row">費用</th>
               <td><%=earning.revenue%>円</td>
             </tr>
           </tbody>

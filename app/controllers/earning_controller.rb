@@ -19,7 +19,7 @@ class EarningController < ApplicationController
     lat=params[:latitude]
     lon=params[:longitude]
     address=Geocoder.address(lat+","+lon)
-    Earning.create!(user_id:@user.id,revenue:params[:revenue],date:date,latitude:lat,longitude:lon,address:address)
+    Earning.create!(user_id:@user.id,revenue:params[:revenue],cost:params[:cost],date:date,latitude:lat,longitude:lon,address:address)
     flash[:notice] = "売上入力完了しました"
     redirect_to earning_index_path(@user.id)
   end

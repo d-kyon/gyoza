@@ -24,4 +24,11 @@ module ApplicationHelper
     end
     return sum
   end
+  def sum_cost(earnings)
+    sum=0
+    earnings.each do |earning|
+        sum+=earning.cost
+    end
+    return sum
+  end
 end

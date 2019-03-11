@@ -4,7 +4,9 @@
 
 <%= form_tag(earning_earn_path(id:current_user.id), method: :post) do%>
 <p>売り上げ</p>
-<%= number_field_tag :revenue ,class:"form-control"%> 円 <br><br>
+<%= number_field_tag :revenue ,0,class:"earning_form"%> 円 <br><br>
+<p>コスト</p>
+<%= number_field_tag :cost ,0,class:"earning_form"%> 円 <br><br>
 <!-- <p>場所</p>
 <%= text_field_tag :location%> -->
 <%= hidden_field_tag :latitude,@lat %>
@@ -14,10 +16,18 @@
 <%else%>
 <p id="text-button" class="btn btn-success">現在地取得</p>
 <%end%>
+<p id= "show_result"></p>
 
 <script>
 document.getElementById("revenue").addEventListener('keyup',function(){
-  if (document.getElementById("revenue").value > 0) {
+  if ((document.getElementById("revenue").value > 0) && (document.getElementById("cost").value >= 0)) {
+    document.getElementById("submit_btn").disabled = false;
+  } else {
+    document.getElementById("submit_btn").disabled = true;
+  }
+});
+document.getElementById("cost").addEventListener('keyup',function(){
+  if ((document.getElementById("revenue").value > 0) && (document.getElementById("cost").value >= 0)) {
     document.getElementById("submit_btn").disabled = false;
   } else {
     document.getElementById("submit_btn").disabled = true;

@@ -16,6 +16,14 @@
       <th scope="row">売上合計</th>
       <td><%=sum_earning(@earnings)%>円</td>
     </tr>
+    <tr>
+      <th scope="row">費用合計</th>
+      <td><%=sum_cost(@earnings)%>円</td>
+    </tr>
+    <tr>
+      <th scope="row">利益</th>
+      <td><%=sum_earning(@earnings)-sum_cost(@earnings)%>円</td>
+    </tr>
   </tbody>
 </table>
 <%= link_to "勤怠管理",admin_attendance_path(id:@employee.id),class:"btn btn-secondary btn-sm"%>
