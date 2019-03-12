@@ -1,4 +1,5 @@
 class Attendance < ApplicationRecord
+  belongs_to :user
   scope :date_between, -> from, to {
   if from.present? && to.present?
     where(in_time: from..to)

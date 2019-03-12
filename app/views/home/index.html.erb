@@ -31,7 +31,10 @@
   <% @attendances.each do |attendance| %>
   <div class="col-sm-12  col-md-6">
     <div class="card bg-light mb-3">
-      <div class="card-header"><%=attendance.in_time.try(:strftime, "%Y年%-m月%-d日(#{%w(日 月 火 水 木 金 土)[attendance.in_time.wday]})")%></div>
+      <div class="card-header">
+        <%=attendance.in_time.try(:strftime, "%Y年%-m月%-d日(#{%w(日 月 火 水 木 金 土)[attendance.in_time.wday]})")%> <br>
+        <%=attendance.address%>
+      </div>
       <div class="card-body">
 
         <div class="row attendance" style="margin-bottom:30px;">
@@ -67,11 +70,6 @@
       <div class="card-body">
         <table class="table table-striped" style="margin-top:50px;">
           <tbody>
-            <tr>
-              <th scope="row">場所</th>
-              <td><%=earning.address%></td>
-            </tr>
-            <tr>
               <th scope="row">売上</th>
               <td><%=earning.revenue%>円</td>
             </tr>

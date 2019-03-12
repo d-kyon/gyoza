@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'report/index'
+  get 'report/show'
   root 'home#index'
 
   #admin
