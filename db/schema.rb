@@ -13,24 +13,25 @@
 ActiveRecord::Schema.define(version: 2019_03_11_031113) do
 
   create_table "attendances", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.integer "user_id"
+    t.bigint "user_id"
     t.datetime "in_time"
     t.datetime "out_time"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "address", default: "不明", null: false
+    t.float "longitude", default: 0.0, null: false
+    t.float "latitude", default: 0.0, null: false
+    t.index ["user_id"], name: "index_attendances_on_user_id"
   end
 
   create_table "earnings", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.integer "user_id"
+    t.bigint "user_id"
     t.date "date"
     t.integer "revenue", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "location", default: "", null: false
-    t.string "address", default: "", null: false
-    t.float "longitude", default: 0.0, null: false
-    t.float "latitude", default: 0.0, null: false
     t.integer "cost", default: 0, null: false
+    t.index ["user_id"], name: "index_earnings_on_user_id"
   end
 
   create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -47,4 +48,6 @@ ActiveRecord::Schema.define(version: 2019_03_11_031113) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "attendances", "users"
+  add_foreign_key "earnings", "users"
 end

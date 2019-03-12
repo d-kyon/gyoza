@@ -3,11 +3,6 @@ class EarningController < ApplicationController
   before_action :authenticate_current_user!
   before_action :set_user, only: [:show, :index,:earn]
   def index
-    if params[:latitude].present? && params[:longitude].present? then
-       flash[:notice] = "現在地を取得しました"
-       @lat=params[:latitude]
-       @lon=params[:longitude]
-    end
   end
 
   def show
@@ -15,11 +10,7 @@ class EarningController < ApplicationController
 
   def earn
     date=Date.today
-    Geocoder.configure(:language  => :ja,   :units => :km )
-    lat=params[:latitude]
-    lon=params[:longitude]
-    address=Geocoder.address(lat+","+lon)
-    Earning.create!(user_id:@user.id,revenue:params[:revenue],cost:params[:cost],date:date,latitude:lat,longitude:lon,address:address)
+    Earning.create!(user_id:@user.id,revenue:params[:revenue],cost:params[:cost],date:date)
     flash[:notice] = "売上入力完了しました"
     redirect_to earning_index_path(@user.id)
   end

@@ -4,13 +4,22 @@ class AttendanceController < ApplicationController
   before_action :set_user, only: [:show, :index,:in_time,:out_time]
   before_action :set_time, only: [:in_time, :out_time]
   def index
+    if params[:latitude].present? && params[:longitude].present? then
+       flash[:notice] = "現在地を取得しました"
+       @lat=params[:latitude]
+       @lon=params[:longitude]
+    end
   end
 
   def show
   end
 
   def in_time
-    Attendance.create!(user_id:@user.id,in_time:@time)
+    Geocoder.configure(:language  => :ja,   :units => :km )
+    lat=params[:latitude]
+    lon=params[:longitude]
+    address=Geocoder.address(lat+","+lon)
+    Attendance.create!(user_id:@user.id,in_time:@time,latitude:lat,longitude:lon,address:address)
     flash[:notice] = "出勤しました"
     redirect_to attendance_index_path(@user.id)
   end

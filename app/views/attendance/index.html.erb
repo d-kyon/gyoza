@@ -1,7 +1,51 @@
 <h1 style="margin-top:100px;">出勤、退勤</h1>
 
 <%if is_working(@user) then%>
-<%= button_to "退勤",attendance_out_time_path(id:current_user.id), method: :post,class:"btn btn-success attendance_btn"  %>
+  <%= button_to "退勤",attendance_out_time_path(id:current_user.id), method: :post,class:"btn btn-success attendance_btn"  %>
 <%else%>
-<%= button_to "出勤",attendance_in_time_path(id:current_user.id), method: :post,class:"btn btn-success attendance_btn" %>
+  <%if params[:latitude].present? && params[:longitude].present?%>
+    <%= form_tag(attendance_in_time_path(id:current_user.id), method: :post) do%>
+      <%= hidden_field_tag :latitude,@lat %>
+      <%= hidden_field_tag :longitude,@lon %>
+      <%= submit_tag "出勤" ,class:"btn btn-dark attendance_btn",:id => "submit_btn"%>
+    <%end%>
+  <%else%>
+      <p id="text-button" class="btn btn-success">現在地取得</p>
+      <p id= "show_result"></p>
+  <%end%>
 <%end%>
+
+<script>
+document.getElementById("text-button").onclick = function() {
+  //ユーザーの現在の位置情報を取得
+  navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
+  /***** ユーザーの現在の位置情報を取得 *****/
+  function successCallback(position) {
+    //データを変数にして整理（position.coords.latitude/longitudeが座標）
+    var lat = position.coords.latitude;
+    var lng = position.coords.longitude;
+    //座標のデータをクエリパラメータとし、座標データを渡したいページに遷移させる
+    //Javascriptで文字列の中に変数を入れたいときは、バッククオートで囲む
+    window.location.href = `/attendance/index/<%=@user.id%>?latitude=${lat}&longitude=${lng}`
+  }
+
+  /***** 位置情報が取得できない場合 *****/
+  function errorCallback(error) {
+    var err_msg = "";
+    switch(error.code)
+    {
+      case 1:
+        err_msg = "位置情報の利用が許可されていません";
+        break;
+      case 2:
+        err_msg = "デバイスの位置が判定できません";
+        break;
+      case 3:
+        err_msg = "タイムアウトしました";
+        break;
+    }
+    document.getElementById("show_result").innerHTML = err_msg;
+    //デバッグ用→　document.getElementById("show_result").innerHTML = error.message;
+  }
+}
+</script>
