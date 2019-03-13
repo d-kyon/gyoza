@@ -17,4 +17,11 @@ scope :date_month, -> year, month {
     where(date: from..to)
   end
 }
+scope :date_year, -> year {
+  if year.present?
+    from = Date.new(year.to_i)
+    to=from.next_year-1
+    where(date: from..to)
+  end
+}
 end

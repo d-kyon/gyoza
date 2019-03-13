@@ -21,10 +21,10 @@
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav">
             <p style="color:white;margin:10px 20px 0 20px">ようこそ<%=current_user.username%>さん</p>
-            <div class="nav-item nav-link logout_btn"><%= link_to "ホーム",home_index_path(current_user.id),class:"logout_btn" %></div>
+            <div class="nav-item nav-link logout_btn"><%= link_to "ホーム",home_index_path,class:"logout_btn" %></div>
             <div class="nav-item nav-link logout_btn"> <%= link_to "勤怠入力",attendance_index_path(current_user.id),class:"logout_btn" %> </div>
             <div class="nav-item nav-link logout_btn"> <%= link_to "売上入力",earning_index_path(current_user.id),class:"logout_btn" %> </div>
-            <div class="nav-item nav-link logout_btn"> <%= link_to "レポート",report_index_path(current_user.id),class:"logout_btn" %> </div>
+            <div class="nav-item nav-link logout_btn"> <%= link_to "レポート",report_index_path,class:"logout_btn" %> </div>
             <div class="nav-item nav-link logout_btn"><%= link_to 'ログアウト', destroy_user_session_path, method: :delete,class:"logout_btn" %></a>
             </div>
           </div>

@@ -1,26 +1,47 @@
 <h1 style="margin-top:100px;">売り上げ入力</h1>
 
-<%= form_tag(earning_earn_path(id:current_user.id), method: :post) do%>
-  <p>売り上げ</p>
-  <%= number_field_tag :revenue ,0,class:"earning_form"%> 円 <br><br>
-  <p>コスト</p>
-  <%= number_field_tag :cost ,0,class:"earning_form"%> 円 <br><br>
+
+<%if targeted(@user) then%>
+  <%= form_tag(earning_earn_path(id:current_user.id), method: :post) do%>
+    <p>売り上げ</p>
+    <%= number_field_tag :revenue ,0,class:"earning_form"%> 円 <br><br>
+    <p>コスト</p>
+    <%= number_field_tag :cost ,0,class:"earning_form"%> 円 <br><br>
+    <%= submit_tag "決定" ,class:"btn btn-dark attendance_btn",:id => "submit_btn",:disabled => "true"%>
+  <%end%>
+  <%targeted=true%>
+<%else%>
+  <%= form_tag(earning_target_path(id:current_user.id), method: :post) do%>
+  <p>今日の目標金額</p>
+  <%= number_field_tag :target ,0,class:"earning_form"%> 円 <br><br>
   <%= submit_tag "決定" ,class:"btn btn-dark attendance_btn",:id => "submit_btn",:disabled => "true"%>
 <%end%>
 
+<%end%>
 <script>
-document.getElementById("revenue").addEventListener('keyup',function(){
-  if ((document.getElementById("revenue").value > 0) && (document.getElementById("cost").value >= 0)) {
-    document.getElementById("submit_btn").disabled = false;
-  } else {
-    document.getElementById("submit_btn").disabled = true;
-  }
-});
-document.getElementById("cost").addEventListener('keyup',function(){
-  if ((document.getElementById("revenue").value > 0) && (document.getElementById("cost").value >= 0)) {
-    document.getElementById("submit_btn").disabled = false;
-  } else {
-    document.getElementById("submit_btn").disabled = true;
-  }
-});
+if (document.getElementById("target")) {
+  document.getElementById("target").addEventListener('keyup',function(){
+    if (document.getElementById("target").value > 0) {
+      document.getElementById("submit_btn").disabled = false;
+    } else {
+      document.getElementById("submit_btn").disabled = true;
+    }
+  });
+}else{
+  document.getElementById("revenue").addEventListener('keyup',function(){
+    if ((document.getElementById("revenue").value > 0) && (document.getElementById("cost").value >= 0)) {
+      document.getElementById("submit_btn").disabled = false;
+    } else {
+      document.getElementById("submit_btn").disabled = true;
+    }
+  });
+  document.getElementById("cost").addEventListener('keyup',function(){
+    if ((document.getElementById("revenue").value > 0) && (document.getElementById("cost").value >= 0)) {
+      document.getElementById("submit_btn").disabled = false;
+    } else {
+      document.getElementById("submit_btn").disabled = true;
+    }
+  });
+}
+
 </script>

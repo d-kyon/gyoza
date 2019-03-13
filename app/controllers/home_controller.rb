@@ -10,8 +10,13 @@ class HomeController < ApplicationController
     if !@attendances then
       @attendances=Attendance.where(user_id:@user.id).date_month(@year,@month).order(:in_time)
     end
-    @earnings=Earning.where(user_id:@user.id).order(:date)
+    if !@earnings then
+      @earnings=Earning.where(user_id:@user.id).date_month(@year, @month).order(:date)
+    end
 
+    @revenue_month=@earnings.group("DAY(date)").sum(:revenue)
+    @cost_month=@earnings.group("DAY(date)").sum(:cost)
+    @target_month=@earnings.group("DAY(date)").sum(:target)
   end
 
   def search_month

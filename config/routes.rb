@@ -1,6 +1,9 @@
 Rails.application.routes.draw do
   get 'report/index'
   get 'report/show'
+  post 'report/search_year'
+  get 'report/search_year'
+
   root 'home#index'
 
   #admin
@@ -19,6 +22,7 @@ Rails.application.routes.draw do
   get 'earning/index/:id' => 'earning#index',as:'earning_index'
   get 'earning/show' => 'earning#show',as:'earning_show'
   post 'earning/earn'
+  post 'earning/target'
 
   #attendance
   get 'attendance/index/:id' => 'attendance#index',as:'attendance_index'

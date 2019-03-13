@@ -18,4 +18,5 @@ scope :date_month, -> year, month {
     where(in_time: from..to)
   end
 }
+
 end
