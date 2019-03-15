@@ -1,4 +1,11 @@
 Rails.application.routes.draw do
+
+  #monthly
+  get 'monthly/index/:id' => 'monthly#index',as:'monthly_index'
+  post 'monthly/set'
+  get 'monthly/set'
+
+  #report
   get 'report/index'
   get 'report/show'
   post 'report/search_year'
