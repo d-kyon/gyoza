@@ -13,6 +13,9 @@
 <%else%>
   <%= form_tag(earning_target_path(id:current_user.id), method: :post) do%>
   <p>今日の目標金額</p>
+  <p>月の売上目標まで<%=@monthly.target_monthly-@monthly.sum_target%>円</p>
+  <p>今月の出勤日数残り<%=@attendance_left%></p>
+  <p>1日あたり<%=(@monthly.target_monthly-@monthly.sum_target)/@attendance_left%>円で達成！</p>
   <%= number_field_tag :target ,0,class:"earning_form"%> 円 <br><br>
   <%= submit_tag "決定" ,class:"btn btn-dark attendance_btn",:id => "submit_btn",:disabled => "true"%>
 <%end%>

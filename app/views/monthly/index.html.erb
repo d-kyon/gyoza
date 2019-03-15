@@ -1,0 +1,32 @@
+<h1 style="margin-top:100px;">月の目標設定</h1>
+
+<%= form_tag(monthly_set_path(id:current_user.id), method: :post) do%>
+  <%= number_field_tag :year,@year%>年
+  <%= number_field_tag :month,@month%>月
+  <p>目標売上</p>
+  <%= number_field_tag :target_monthly ,0,class:"earning_form"%> 円 <br><br>
+  <p>出勤日数</p>
+  <%= number_field_tag :attendance_days ,0,class:"earning_form"%> 日 <br><br>
+  <%= submit_tag "決定" ,class:"btn btn-dark attendance_btn",:id => "submit_btn",:disabled => "true"%>
+<%end%>
+
+
+<script>
+
+  document.getElementById("target_monthly").addEventListener('keyup',function(){
+    if ((document.getElementById("target_monthly").value > 0) && (document.getElementById("attendance_days").value > 0)) {
+      document.getElementById("submit_btn").disabled = false;
+    } else {
+      document.getElementById("submit_btn").disabled = true;
+    }
+  });
+
+  document.getElementById("attendance_days").addEventListener('keyup',function(){
+    if ((document.getElementById("target_monthly").value > 0) && (document.getElementById("attendance_days").value > 0)) {
+      document.getElementById("submit_btn").disabled = false;
+    } else {
+      document.getElementById("submit_btn").disabled = true;
+    }
+  });
+
+</script>

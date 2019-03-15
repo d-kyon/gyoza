@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_11_031113) do
+ActiveRecord::Schema.define(version: 2019_03_13_021844) do
 
   create_table "attendances", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "user_id"
@@ -32,7 +32,23 @@ ActiveRecord::Schema.define(version: 2019_03_11_031113) do
     t.datetime "updated_at", null: false
     t.integer "cost", default: 0, null: false
     t.integer "target", default: 0, null: false
+    t.bigint "monthly_id"
+    t.index ["monthly_id"], name: "index_earnings_on_monthly_id"
     t.index ["user_id"], name: "index_earnings_on_user_id"
+  end
+
+  create_table "monthlies", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.bigint "user_id"
+    t.integer "year", default: 0, null: false
+    t.integer "month", default: 0, null: false
+    t.integer "sum_target", default: 0, null: false
+    t.integer "target_monthly", default: 0, null: false
+    t.integer "sum_cost", default: 0, null: false
+    t.integer "sum_earning", default: 0, null: false
+    t.integer "attendance_days", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_monthlies_on_user_id"
   end
 
   create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -50,5 +66,7 @@ ActiveRecord::Schema.define(version: 2019_03_11_031113) do
   end
 
   add_foreign_key "attendances", "users"
+  add_foreign_key "earnings", "monthlies"
   add_foreign_key "earnings", "users"
+  add_foreign_key "monthlies", "users"
 end
