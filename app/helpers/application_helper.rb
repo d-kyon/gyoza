@@ -31,4 +31,12 @@ module ApplicationHelper
     end
     return sum
   end
+
+  def show_target_month (user,year,month)
+    if Monthly.find_by(user_id:user.id,year:year,month:month).nil? then
+      return 0
+    else
+      return Monthly.find_by(user_id:user.id,year:year,month:month).target_monthly
+    end
+  end
 end

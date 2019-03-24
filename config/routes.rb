@@ -1,17 +1,15 @@
 Rails.application.routes.draw do
-
+  root 'home#index'
   #monthly
   get 'monthly/index/:id' => 'monthly#index',as:'monthly_index'
   post 'monthly/set'
   get 'monthly/set'
 
   #report
-  get 'report/index'
+  get 'report/index/:id' => 'report#index',as:'report_index'
   get 'report/show'
   post 'report/search_year'
   get 'report/search_year'
-
-  root 'home#index'
 
   #admin
   get 'admin/index'
@@ -38,7 +36,7 @@ Rails.application.routes.draw do
   post 'attendance/out_time'
 
   #home
-  get 'home/index'
+  get 'home/index/:id' => 'home#index',as:'home_index'
   get 'home/search_month'
   post 'home/search_month'
 

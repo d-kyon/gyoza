@@ -9,9 +9,8 @@
     <div class="card img-thumbnail text-center">
       <div class="card-body px-2 py-3">
         <h5 class="card-title"><%=employee.username%></h5>
-        <%= link_to "月ごとまとめ",admin_show_path(id:employee.id),class:"btn btn-primary btn-sm"%>
-        <%= link_to "勤怠管理",admin_attendance_path(id:employee.id),class:"btn btn-secondary btn-sm"%>
-        <%= link_to "売上管理",admin_earning_path(id:employee.id),class:"btn btn-secondary btn-sm"%>
+        <%= link_to "月ごと売上まとめ",report_index_path(id:employee.id),class:"btn btn-primary btn-sm"%>
+        <%= link_to "勤怠,売上管理",home_index_path(id:employee.id),class:"btn btn-secondary btn-sm"%>
       </div><!-- /.card-body -->
     </div><!-- /.card -->
   </div><!-- /.col-sm-6.col-md-3 -->
