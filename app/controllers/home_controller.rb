@@ -12,10 +12,6 @@ class HomeController < ApplicationController
     if !@earnings then
       @earnings=Earning.where(user_id:@user.id).date_month(@year, @month).order(:date)
     end
-
-    @revenue_month=@earnings.group("DAY(date)").sum(:revenue)
-    @cost_month=@earnings.group("DAY(date)").sum(:cost)
-    @target_month=@earnings.group("DAY(date)").sum(:target)
   end
 
   def search_month
@@ -27,7 +23,11 @@ class HomeController < ApplicationController
   end
   private
   def set_user
-    @user = User.find(current_user.id)
+    if params[:id].nil? then
+      @user = User.find(current_user.id)
+    else
+      @user= User.find(params[:id])
+    end
   end
   def authenticate_current_user!
     if !current_user.is_admin then

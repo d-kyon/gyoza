@@ -9,9 +9,6 @@ class ReportController < ApplicationController
     if !@earnings then
       @earnings=Earning.where(user_id:@user.id).date_year(@year).order(:date)
     end
-    @revenue_month=@earnings.group("MONTH(date)").sum(:revenue)
-    @cost_month=@earnings.group("MONTH(date)").sum(:cost)
-    @target_month=Monthly.find_by(user_id:@user.id)
   end
 
   def show
@@ -19,9 +16,6 @@ class ReportController < ApplicationController
   def search_year
     @earnings=Earning.where(user_id:@user.id).date_year(params[:year]).order(:date)
     @year=params[:year]
-    @revenue_month=@earnings.group("MONTH(date)").sum(:revenue)
-    @cost_month=@earnings.group("MONTH(date)").sum(:cost)
-    @target_month=@earnings.group("MONTH(date)").sum(:target)
     render action: :index
   end
   private

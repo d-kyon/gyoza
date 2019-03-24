@@ -9,7 +9,7 @@ class EarningController < ApplicationController
     @year=date.year
     @month=date.month
     @earnings=Earning.where(user_id:@user.id).date_month(@year, @month)
-    @attendance_left=@monthly.attendance_days-@earnings.group("DAY(date)").length
+    @attendance_left=@monthly.attendance_days-@earnings.length
   end
 
   def show

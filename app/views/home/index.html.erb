@@ -85,17 +85,17 @@
       <%for i in 1..31 do%>
         <tr>
             <th><%=i%>日</th>
-            <td><%=@target_month[i].to_i%>円</td>
-            <td><%=@revenue_month[i].to_i%>円</td>
-            <%if @revenue_month[i].to_i-@target_month[i].to_i == 0 then%>
-              <td><%=@revenue_month[i].to_i-@target_month[i].to_i%>円</td>
-            <%elsif @revenue_month[i].to_i-@target_month[i].to_i > 0%>
-              <td style="color:#88c736">+<%=@revenue_month[i].to_i-@target_month[i].to_i%>円</td>
+            <td><%=day_target(@user,@year,@month,i)%>円</td>
+            <td><%=day_revenue(@user,@year,@month,i)%>円</td>
+            <%if day_revenue(@user,@year,@month,i)-day_target(@user,@year,@month,i) == 0 then%>
+              <td><%=day_revenue(@user,@year,@month,i)-day_target(@user,@year,@month,i)%>円</td>
+            <%elsif day_revenue(@user,@year,@month,i)-day_target(@user,@year,@month,i) > 0%>
+              <td style="color:#88c736">+<%=day_revenue(@user,@year,@month,i)-day_target(@user,@year,@month,i)%>円</td>
             <%else%>
-              <td style="color:#ed4434"><%=@revenue_month[i].to_i-@target_month[i].to_i%>円</td>
+              <td style="color:#ed4434"><%=day_revenue(@user,@year,@month,i)-day_target(@user,@year,@month,i)%>円</td>
             <%end%>
 
-            <td><%=@cost_month[i].to_i%></td>
+            <td><%=day_cost(@user,@year,@month,i)%>円</td>
         </tr>
       <%end%>
     </tbody>

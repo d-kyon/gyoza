@@ -20,16 +20,16 @@
             <th><%=i%>月</th>
 
             <td><%=show_target_month(@user,@year,i)%>円</td>
-            <td><%=@revenue_month[i].to_i%>円</td>
-            <%if @revenue_month[i].to_i-show_target_month(@user,@year,i) == 0 then%>
-              <td><%=@revenue_month[i].to_i-show_target_month(@user,@year,i)%>円</td>
-            <%elsif @revenue_month[i].to_i-show_target_month(@user,@year,i) > 0%>
-              <td style="color:#88c736">+<%=@revenue_month[i].to_i-show_target_month(@user,@year,i)%>円</td>
+            <td><%=show_revenue_month(@user,@year,i)%>円</td>
+            <%if show_revenue_month(@user,@year,i)-show_target_month(@user,@year,i) == 0 then%>
+              <td><%=show_revenue_month(@user,@year,i)-show_target_month(@user,@year,i)%>円</td>
+            <%elsif show_revenue_month(@user,@year,i)-show_target_month(@user,@year,i) > 0%>
+              <td style="color:#88c736">+<%=show_revenue_month(@user,@year,i)-show_target_month(@user,@year,i)%>円</td>
             <%else%>
-              <td style="color:#ed4434"><%=@revenue_month[i].to_i-show_target_month(@user,@year,i)%>円</td>
+              <td style="color:#ed4434"><%=show_revenue_month(@user,@year,i)-show_target_month(@user,@year,i)%>円</td>
             <%end%>
 
-            <td><%=@cost_month[i].to_i%>円</td>
+            <td><%=show_cost_month(@user,@year,i)%>円</td>
         </tr>
       <%end%>
     </tbody>
