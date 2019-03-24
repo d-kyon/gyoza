@@ -1,4 +1,4 @@
-<h1 style="margin-top:100px;">ホーム</h1>
+<h1 style="margin-top:100px;"><%=@user.username%>さんのホーム</h1>
 <%= form_tag(home_search_month_path(id:@user.id), method: :post) do%>
 <%= number_field_tag :year,@year%>年
 <%= number_field_tag :month,@month%>月
@@ -8,13 +8,20 @@
 <table class="table table-striped" style="margin-top:50px;">
   <tbody>
     <tr>
-
       <th scope="row">勤務時間合計</th>
       <td><%=sum_working_hour(@attendances)%></td>
     </tr>
     <tr>
+      <th scope="row">月間勤務予定</th>
+      <td><%=Monthly.find_by(user_id:@user.id,year:@year,month:@month).attendance_days%>日</td>
+    </tr>
+    <tr>
       <th scope="row">売上合計</th>
       <td><%=sum_earning(@earnings)%>円</td>
+    </tr>
+    <tr>
+      <th scope="row">月間売上目標</th>
+      <td><%=Monthly.find_by(user_id:@user.id,year:@year,month:@month).target_monthly%>円</td>
     </tr>
     <tr>
       <th scope="row">費用合計</th>

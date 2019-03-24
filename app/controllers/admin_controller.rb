@@ -5,6 +5,7 @@ class AdminController < ApplicationController
                                       :attendance_search_month ,:earning_search_month]
   before_action :authenticate_user!
   before_action :authenticate_admin!
+  before_action :authenticate_monthly_target,only: :index
   def index
     @employees=User.all
   end
@@ -68,7 +69,16 @@ class AdminController < ApplicationController
 
   def authenticate_admin!
     if !@user.is_admin then
-      redirect_to home_index_path
+      redirect_to home_index_path(@user.id)
+    end
+  end
+
+  def authenticate_monthly_target
+    year=Date.today.year
+    month=Date.today.month
+    if Monthly.find_by(user_id:@user.id,year:year,month:month).nil? then
+      flash[:notice] = "月間目標を入力してください"
+      redirect_to monthly_index_path(@user.id)
     end
   end
 
