@@ -12,7 +12,7 @@ Rails.application.routes.draw do
   get 'report/search_year'
 
   #admin
-  get 'admin/index'
+  get 'admin/index/:id' => 'admin#index',as:'admin_index'
   get 'admin/show/:id' => 'admin#show',as:'admin_show'
   get 'admin/attendance/:id' => 'admin#attendance',as:'admin_attendance'
   get 'admin/earning/:id' => 'admin#earning',as:'admin_earning'

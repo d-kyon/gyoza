@@ -39,4 +39,18 @@ module ApplicationHelper
       return Monthly.find_by(user_id:user.id,year:year,month:month).target_monthly
     end
   end
+  def show_revenue_month (user,year,month)
+    if Monthly.find_by(user_id:user.id,year:year,month:month).nil? then
+      return 0
+    else
+      return Monthly.find_by(user_id:user.id,year:year,month:month).sum_earning
+    end
+  end
+  def show_cost_month (user,year,month)
+    if Monthly.find_by(user_id:user.id,year:year,month:month).nil? then
+      return 0
+    else
+      return Monthly.find_by(user_id:user.id,year:year,month:month).sum_cost
+    end
+  end
 end
