@@ -32,7 +32,7 @@ class HomeController < ApplicationController
   def authenticate_current_user!
     if !current_user.is_admin then
       if current_user.id!=params[:id].to_i then
-        redirect_to home_index_path(@user.id)
+        redirect_to home_index_path(current_user.id)
       end
     end
   end
