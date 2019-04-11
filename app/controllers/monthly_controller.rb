@@ -9,6 +9,8 @@ class MonthlyController < ApplicationController
     date=Date.today
     @year=date.year
     @month=date.month
+    if Monthly.where(user_id:@user.id,year:params[:year],month:params[:month]).present? then
+      
   end
 
   def set

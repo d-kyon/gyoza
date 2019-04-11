@@ -21,11 +21,12 @@ class EarningController < ApplicationController
       Earning.create!(user_id:@user.id,target:params[:target],date:date,monthly_id:@monthly.id)
       sum_target=@monthly.sum_target+params[:target].to_i
       @monthly.update!(sum_target:sum_target)
+      flash[:notice] = "目標変更完了しました"
     else
       Monthly.create!(user_id:@user.id,year:date.year,month:date.month,sum_target:params[:target])
       Earning.create!(user_id:@user.id,target:params[:target],date:date,monthly_id:monthly.id)
+      flash[:notice] = "目標入力完了しました"
     end
-    flash[:notice] = "目標入力完了しました"
     redirect_to earning_index_path(@user.id)
   end
 
