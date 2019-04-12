@@ -1,18 +1,36 @@
 class AttendanceController < ApplicationController
   before_action :authenticate_user!
-  before_action :authenticate_current_user!
+  before_action :authenticate_current_user!, except: [:edit, :delete,:setting]
   before_action :set_user, only: [:show, :index,:in_time,:out_time]
   before_action :set_time, only: [:in_time, :out_time]
   before_action :authenticate_monthly_target,only: :index
   def index
     if params[:latitude].present? && params[:longitude].present? then
-       flash[:notice] = "現在地を取得しました"
-       @lat=params[:latitude]
-       @lon=params[:longitude]
+      flash[:notice] = "現在地を取得しました"
+      @lat=params[:latitude]
+      @lon=params[:longitude]
     end
   end
 
   def show
+  end
+
+  def setting
+    @attendance=Attendance.find(params[:id])
+    @user=@attendance.user
+
+  end
+
+  def edit
+    in_time = Time.zone.local(params[:attendance]["in_time(1i)"].to_i, params[:attendance]["in_time(2i)"].to_i, params[:attendance]["in_time(3i)"].to_i, params[:attendance]["in_time(4i)"].to_i, params[:attendance]["in_time(5i)"].to_i)
+    out_time = Time.zone.local(params[:attendance]["out_time(1i)"].to_i, params[:attendance]["out_time(2i)"].to_i, params[:attendance]["out_time(3i)"].to_i, params[:attendance]["out_time(4i)"].to_i, params[:attendance]["out_time(5i)"].to_i)
+    Attendance.find(params[:attendance][:id]).update!(address:params[:attendance][:address],in_time:in_time,out_time:out_time)
+    redirect_to home_index_path(current_user.id)
+  end
+
+  def delete
+    Attendance.find(params[:id]).delete
+    redirect_to home_index_path(current_user.id)
   end
 
   def in_time

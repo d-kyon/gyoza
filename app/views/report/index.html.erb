@@ -8,28 +8,46 @@
     <thead>
         <tr>
             <th>月</th>
+            <th>出勤日数</th>
             <th>目標売上</th>
             <th>売上金額</th>
             <th>目標との差</th>
             <th>費用</th>
+            <th>利益</th>
         </tr>
     </thead>
     <tbody>
       <%for i in 1..12 do%>
         <tr>
             <th><%=i%>月</th>
-
-            <td><%=show_target_month(@user,@year,i)%>円</td>
-            <td><%=show_revenue_month(@user,@year,i)%>円</td>
-            <%if show_revenue_month(@user,@year,i)-show_target_month(@user,@year,i) == 0 then%>
-              <td><%=show_revenue_month(@user,@year,i)-show_target_month(@user,@year,i)%>円</td>
-            <%elsif show_revenue_month(@user,@year,i)-show_target_month(@user,@year,i) > 0%>
-              <td style="color:#88c736">+<%=show_revenue_month(@user,@year,i)-show_target_month(@user,@year,i)%>円</td>
+            <td><%=attendance_days(monthly(@user,@year,i))%>日</td>
+            <td><%=target_monthly(monthly(@user,@year,i))%>円</td>
+            <td><%=sum_earning(monthly(@user,@year,i))%>円</td>
+            <%if achievement_monthly(monthly(@user,@year,i)) == 0 then%>
+              <td><%=achievement_monthly(monthly(@user,@year,i))%>円</td>
+            <%elsif achievement_monthly(monthly(@user,@year,i)) > 0%>
+              <td style="color:#88c736">+<%=achievement_monthly(monthly(@user,@year,i))%>円</td>
             <%else%>
-              <td style="color:#ed4434"><%=show_revenue_month(@user,@year,i)-show_target_month(@user,@year,i)%>円</td>
+              <td style="color:#ed4434"><%=achievement_monthly(monthly(@user,@year,i))%>円</td>
             <%end%>
 
-            <td><%=show_cost_month(@user,@year,i)%>円</td>
+            <td><%=sum_cost(monthly(@user,@year,i))%>円</td>
+
+            <%if sum_profit(monthly(@user,@year,i)) == 0 then%>
+              <td><%=sum_profit(monthly(@user,@year,i))%>円</td>
+            <%elsif sum_profit(monthly(@user,@year,i)) > 0%>
+              <td style="color:#88c736">+<%=sum_profit(monthly(@user,@year,i))%>円</td>
+            <%else%>
+              <td style="color:#ed4434"><%=sum_profit(monthly(@user,@year,i))%>円</td>
+            <%end%>
+
+            <%if monthly(@user,@year,i)%>
+              <td><%= button_to "編集",monthly_setting_path(id:monthly(@user,@year,i).id), method: :get,class:"btn btn-success"  %></td>
+            <%else%>
+              <td><%= button_to "登録",monthly_index_path(id:@user.id), method: :get,class:"btn btn-success", params:{year: @year,month:i}%></td></td>
+            <%end%>
+
+
         </tr>
       <%end%>
     </tbody>

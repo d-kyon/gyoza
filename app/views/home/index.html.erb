@@ -13,23 +13,31 @@
     </tr>
     <tr>
       <th scope="row">月間勤務予定</th>
-      <td><%=Monthly.find_by(user_id:@user.id,year:@year,month:@month).attendance_days%>日</td>
+      <%if Monthly.find_by(user_id:@user.id,year:@year,month:@month) then%>
+        <td><%=Monthly.find_by(user_id:@user.id,year:@year,month:@month).attendance_days%>日</td>
+      <%else%>
+        <td>月間目標を入力してください。</td>
+      <%end%>
     </tr>
     <tr>
       <th scope="row">売上合計</th>
-      <td><%=sum_earning(@earnings)%>円</td>
+      <td><%=sum_earning(monthly(@user,@year,@month))%>円</td>
     </tr>
     <tr>
       <th scope="row">月間売上目標</th>
-      <td><%=Monthly.find_by(user_id:@user.id,year:@year,month:@month).target_monthly%>円</td>
+      <%if Monthly.find_by(user_id:@user.id,year:@year,month:@month) then%>
+        <td><%=Monthly.find_by(user_id:@user.id,year:@year,month:@month).target_monthly%>円</td>
+      <%else%>
+        <td>月間目標を入力してください。</td>
+      <%end%>
     </tr>
     <tr>
       <th scope="row">費用合計</th>
-      <td><%=sum_cost(@earnings)%>円</td>
+      <td><%=sum_cost(monthly(@user,@year,@month))%>円</td>
     </tr>
     <tr>
       <th scope="row">利益</th>
-      <td><%=sum_earning(@earnings)-sum_cost(@earnings)%>円</td>
+      <td><%=sum_profit(monthly(@user,@year,@month))%>円</td>
     </tr>
   </tbody>
 </table>
@@ -62,6 +70,7 @@
         <div style="text-align:center;">
           出勤時間　<%=working_hour(attendance.in_time,attendance.out_time)%>
         </div>
+        <%= button_to "編集",attendance_setting_path(id:attendance.id), method: :get,class:"btn btn-success"  %>
       </div>
     </div>
   </div>
@@ -79,23 +88,37 @@
             <th>売上金額</th>
             <th>目標との差</th>
             <th>費用</th>
+            <th>利益</th>
         </tr>
     </thead>
     <tbody>
-      <%for i in 1..31 do%>
+      <%for i in 1..last_day(@year,@month) do%>
         <tr>
             <th><%=i%>日</th>
-            <td><%=day_target(@user,@year,@month,i)%>円</td>
-            <td><%=day_revenue(@user,@year,@month,i)%>円</td>
-            <%if day_revenue(@user,@year,@month,i)-day_target(@user,@year,@month,i) == 0 then%>
-              <td><%=day_revenue(@user,@year,@month,i)-day_target(@user,@year,@month,i)%>円</td>
-            <%elsif day_revenue(@user,@year,@month,i)-day_target(@user,@year,@month,i) > 0%>
-              <td style="color:#88c736">+<%=day_revenue(@user,@year,@month,i)-day_target(@user,@year,@month,i)%>円</td>
+            <td><%=target(daily_earning(@user,@earnings,@year,@month,i))%>円</td>
+            <td><%=revenue(daily_earning(@user,@earnings,@year,@month,i))%>円</td>
+            <%if achievement(daily_earning(@user,@earnings,@year,@month,i)) == 0 then%>
+              <td><%=achievement(daily_earning(@user,@earnings,@year,@month,i))%>円</td>
+            <%elsif achievement(daily_earning(@user,@earnings,@year,@month,i)) > 0%>
+              <td style="color:#88c736">+<%=achievement(daily_earning(@user,@earnings,@year,@month,i))%>円</td>
             <%else%>
-              <td style="color:#ed4434"><%=day_revenue(@user,@year,@month,i)-day_target(@user,@year,@month,i)%>円</td>
+              <td style="color:#ed4434"><%=achievement(daily_earning(@user,@earnings,@year,@month,i))%>円</td>
             <%end%>
 
-            <td><%=day_cost(@user,@year,@month,i)%>円</td>
+            <td><%=cost(daily_earning(@user,@earnings,@year,@month,i))%>円</td>
+
+            <%if profit(daily_earning(@user,@earnings,@year,@month,i)) == 0 then%>
+              <td><%=profit(daily_earning(@user,@earnings,@year,@month,i))%>円</td>
+            <%elsif profit(daily_earning(@user,@earnings,@year,@month,i)) > 0%>
+              <td style="color:#88c736">+<%=profit(daily_earning(@user,@earnings,@year,@month,i))%>円</td>
+            <%else%>
+              <td style="color:#ed4434"><%=profit(daily_earning(@user,@earnings,@year,@month,i))%>円</td>
+            <%end%>
+
+            <%if daily_earning(@user,@earnings,@year,@month,i)%>
+              <td><%= button_to "編集",earning_setting_path(id:daily_earning(@user,@earnings,@year,@month,i).id), method: :get,class:"btn btn-success"  %></td>
+            <%end%>
+
         </tr>
       <%end%>
     </tbody>
