@@ -1,0 +1,17 @@
+<h1 style="margin-top:100px;">設定</h1>
+
+<%= form_for(@attendance, url: attendance_edit_path, html: {method: 'POST'}) do |f| %>
+<%= f.hidden_field :id, :value => @attendance.id %>
+  <label class="control-label" for="">日付</label>
+  <p><%=@attendance.in_time.year%>年<%=@attendance.in_time.month%>月<%=@attendance.in_time.day%>日</p>
+  <label class="control-label" for="">場所</label>
+  <%= f.text_field :address, class: 'form-control'%>
+  <label class="control-label" for="">出勤時間</label>
+  <%= f.datetime_select :in_time,{use_month_numbers: true,:discard_day => true,:discard_month => true,:discard_year => true}, {class: "form-control bootstrap-date"} %><br>
+
+  <label class="control-label" for="">退勤時間</label>
+  <%= f.datetime_select :out_time,{use_month_numbers: true,:discard_day => true,:discard_month => true,:discard_year => true}, {class: "form-control bootstrap-date"} %> <br>
+  <%= f.submit '編集', class: 'btn btn-success' %>
+<% end %>
+
+<%= button_to "削除",attendance_delete_path(id:params[:id]), method: :delete,class:"btn btn-danger"  %>

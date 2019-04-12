@@ -1,0 +1,16 @@
+<h1 style="margin-top:100px;">設定</h1>
+
+<%= form_for(@earning, url: earning_edit_path, html: {method: 'POST'}) do |f| %>
+<%= f.hidden_field :id, :value => @earning.id %>
+  <label class="control-label" for="">日付</label>
+  <p><%=@earning.date.year%>年<%=@earning.date.month%>月<%=@earning.date.day%>日</p>
+  <label class="control-label" for="">目標</label>
+  <%= f.number_field :target, class: 'form-control'%>
+  <label class="control-label" for="">売上</label>
+  <%= f.number_field :revenue, class: 'form-control'%>
+  <label class="control-label" for="">費用</label>
+  <%= f.number_field :cost, class: 'form-control'%>
+  <%= f.submit '編集', class: 'btn btn-success' %>
+<% end %>
+
+<%= button_to "削除",attendance_delete_path(id:params[:id]), method: :delete,class:"btn btn-danger"  %>

@@ -1,0 +1,14 @@
+<h1 style="margin-top:100px;">月の目標設定</h1>
+
+<%= form_for(@monthly, url: monthly_edit_path, html: {method: 'POST'}) do |f| %>
+<%= f.hidden_field :id, :value => @monthly.id %>
+  <p><%=@monthly.year%>年<%=@monthly.month%>月</p>
+  <label class="control-label" for="">出勤日数</label>
+  <%= f.number_field :attendance_days, class: 'form-control'%>
+  <label class="control-label" for="">月間目標</label>
+  <%= f.number_field :target_monthly, class: 'form-control'%>
+  
+  <%= f.submit '編集', class: 'btn btn-success' %>
+<% end %>
+
+<%= button_to "削除",monthly_delete_path(id:params[:id]), method: :delete,class:"btn btn-danger"  %>

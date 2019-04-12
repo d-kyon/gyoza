@@ -16,41 +16,4 @@ module ApplicationHelper
     end
     (Time.parse("1/1") + (sum)).strftime("%H時間%M分%S秒")
   end
-
-  def sum_earning(earnings)
-    sum=0
-    earnings.each do |earning|
-        sum+=earning.revenue
-    end
-    return sum
-  end
-  def sum_cost(earnings)
-    sum=0
-    earnings.each do |earning|
-        sum+=earning.cost
-    end
-    return sum
-  end
-
-  def show_target_month (user,year,month)
-    if Monthly.find_by(user_id:user.id,year:year,month:month).nil? then
-      return 0
-    else
-      return Monthly.find_by(user_id:user.id,year:year,month:month).target_monthly
-    end
-  end
-  def show_revenue_month (user,year,month)
-    if Monthly.find_by(user_id:user.id,year:year,month:month).nil? then
-      return 0
-    else
-      return Monthly.find_by(user_id:user.id,year:year,month:month).sum_earning
-    end
-  end
-  def show_cost_month (user,year,month)
-    if Monthly.find_by(user_id:user.id,year:year,month:month).nil? then
-      return 0
-    else
-      return Monthly.find_by(user_id:user.id,year:year,month:month).sum_cost
-    end
-  end
 end
