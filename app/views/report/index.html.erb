@@ -44,7 +44,7 @@
             <%if monthly(@user,@year,i)%>
               <td><%= button_to "編集",monthly_setting_path(id:monthly(@user,@year,i).id), method: :get,class:"btn btn-success"  %></td>
             <%else%>
-              <td><%= button_to "登録",monthly_index_path(id:@user.id), method: :get,class:"btn btn-success", params:{year: @year,month:i}%></td></td>
+              <td><%= button_to "登録",monthly_index_path(id:@user.id), method: :get,class:"btn btn-primary", params:{year: @year,month:i}%></td></td>
             <%end%>
 
 
