@@ -1,6 +1,6 @@
 <h1 style="margin-top:100px;">設定</h1>
 
-<%= form_for(@earning, url: earning_edit_path, html: {method: 'POST'}) do |f| %>
+<%= form_for(@earning, url: earning_edit_path, html: {method: 'PATCH'}) do |f| %>
 <%= f.hidden_field :id, :value => @earning.id %>
   <label class="control-label" for="">日付</label>
   <p><%=@earning.date.year%>年<%=@earning.date.month%>月<%=@earning.date.day%>日</p>

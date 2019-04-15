@@ -2,7 +2,7 @@ class AdminController < ApplicationController
   before_action :set_user
   before_action :set_employee,only: [:show,:attendance,:earning,:earning_between,
                                       :attendance_between,:search_month,
-                                      :attendance_search_month ,:earning_search_month]
+                                      :attendance_search_month ,:earning_search_month,:user]
   before_action :authenticate_user!
   before_action :authenticate_admin!
   before_action :authenticate_monthly_target,only: :index
@@ -57,6 +57,15 @@ class AdminController < ApplicationController
     @year=params[:year]
     @month=params[:month]
     render action: :earning
+  end
+
+  def user
+  end
+
+  def user_edit
+    employee=User.find(params[:user][:id])
+    employee.update!(username:params[:user][:username],salary:params[:user][:salary])
+    redirect_to admin_index_path(@user.id)
   end
 
   private
