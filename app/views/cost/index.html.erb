@@ -1,11 +1,11 @@
-<h1 style="margin-top:100px;">売り上げ入力</h1>
+<h1 style="margin-top:100px;">売上入力</h1>
 
 <%if @monthly then%>
 
   <%if targeted(@user) then%>
   <!-- 当日の目標を決めた人に出す画面 -->
     <%= form_tag(earning_earn_path(id:current_user.id), method: :post) do%>
-      <p>売り上げ</p>
+      <p>売上</p>
       <%= number_field_tag :revenue ,0,class:"earning_form"%> 円 <br><br>
       <h2>コスト</h2>
       <p>交通費</p>

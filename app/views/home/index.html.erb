@@ -32,8 +32,22 @@
       <%end%>
     </tr>
     <tr>
+      <th scope="row">月間売上目標との差</th>
+      <%if Monthly.find_by(user_id:@user.id,year:@year,month:@month) then%>
+        <%if sum_earning(monthly(@user,@year,@month))-Monthly.find_by(user_id:@user.id,year:@year,month:@month).target_monthly == 0%>
+          <td>0円</td>
+        <%elsif sum_earning(monthly(@user,@year,@month))-Monthly.find_by(user_id:@user.id,year:@year,month:@month).target_monthly > 0%>
+          <td style="color:#88c736">+<%=sum_earning(monthly(@user,@year,@month))-Monthly.find_by(user_id:@user.id,year:@year,month:@month).target_monthly%>円</td>
+        <%else%>
+          <td style="color:#ed4434"><%=sum_earning(monthly(@user,@year,@month))-Monthly.find_by(user_id:@user.id,year:@year,month:@month).target_monthly%>円</td>
+        <%end%>
+      <%else%>
+        <td>月間目標を入力してください。</td>
+      <%end%>
+    </tr>
+    <tr>
       <th scope="row">費用合計</th>
-      <td><%=sum_cost(monthly(@user,@year,@month))%>円</td>
+      <td style="color:#ed4434">-<%=sum_cost(monthly(@user,@year,@month))%>円</td>
     </tr>
     <tr>
       <th scope="row">利益</th>
@@ -109,10 +123,14 @@
               <td style="color:#ed4434"><%=achievement(daily_earning(@user,@earnings,@year,@month,i))%>円</td>
             <%end%>
 
-            <td><%=cost(daily_earning(@user,@earnings,@year,@month,i))%>円</td>
+            <%if cost(daily_earning(@user,@earnings,@year,@month,i)) == 0%>
+              <td>0円</td>
+            <%else%>
+              <td style="color:#ed4434">-<%=cost(daily_earning(@user,@earnings,@year,@month,i))%>円</td>
+            <%end%>
 
             <%if profit(daily_earning(@user,@earnings,@year,@month,i)) == 0 then%>
-              <td><%=profit(daily_earning(@user,@earnings,@year,@month,i))%>円</td>
+              <td>0円</td>
             <%elsif profit(daily_earning(@user,@earnings,@year,@month,i)) > 0%>
               <td style="color:#88c736">+<%=profit(daily_earning(@user,@earnings,@year,@month,i))%>円</td>
             <%else%>
@@ -122,7 +140,6 @@
             <%if daily_earning(@user,@earnings,@year,@month,i)%>
               <td><%= button_to "編集",earning_setting_path(id:daily_earning(@user,@earnings,@year,@month,i).id), method: :get,class:"btn btn-success"  %></td>
             <%end%>
-
         </tr>
       <%end%>
     </tbody>

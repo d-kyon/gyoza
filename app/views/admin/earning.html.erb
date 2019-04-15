@@ -1,11 +1,11 @@
-<h1 style="margin-top:100px;"><%=@employee.username%>の売り上げ管理</h1>
+<h1 style="margin-top:100px;"><%=@employee.username%>の売上管理</h1>
 <%= form_tag(admin_earning_search_month_path(id:@employee.id), method: :post) do%>
 <%= number_field_tag :year,@year%>年
 <%= number_field_tag :month,@month%>月
 <%= submit_tag "検索" %>
 <%end%>
 
-<h2>売り上げ</h2>
+<h2>売上</h2>
 <div class="row">
   <% @earnings.each do |earning| %>
   <div class="col-sm-12  col-md-6">

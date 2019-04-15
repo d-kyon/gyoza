@@ -16,7 +16,7 @@ class MonthlyController < ApplicationController
   def set
       Monthly.create(user_id:@user.id,year:params[:year],month:params[:month],target_monthly:params[:target_monthly],attendance_days:params[:attendance_days])
       flash[:notice] = "目標入力完了しました"
-      redirect_to report_index_path(@user.id)
+      redirect_to earning_index_path(@user.id)
   end
 
   def edit

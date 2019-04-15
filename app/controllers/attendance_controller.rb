@@ -40,7 +40,7 @@ class AttendanceController < ApplicationController
     address=Geocoder.address(lat+","+lon)
     Attendance.create!(user_id:@user.id,in_time:@time,latitude:lat,longitude:lon,address:address)
     flash[:notice] = "出勤しました"
-    redirect_to attendance_index_path(@user.id)
+    redirect_to earning_index_path(@user.id)
   end
 
   def out_time

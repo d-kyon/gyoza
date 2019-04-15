@@ -13,11 +13,17 @@ class CostController < ApplicationController
 
 
     def edit
+      @earning=Cost.find(params[:cost][:id]).earning
+      @user=@earning.user
       Cost.find(params[:cost][:id]).update!(travel_cost:params[:cost][:travel_cost],accommodation:params[:cost][:accommodation],
         buying_price:params[:cost][:buying_price],for_tasting:params[:cost][:for_tasting],fixtures:params[:cost][:fixtures],others:params[:cost][:others])
       cost=[params[:cost][:travel_cost].to_i,params[:cost][:accommodation].to_i,params[:cost][:buying_price].to_i,
               params[:cost][:for_tasting].to_i,params[:cost][:fixtures].to_i,params[:cost][:others].to_i].sum
-      Earning.find(Cost.find(params[:cost][:id]).earning_id).update!(daily_cost:cost)
+      @earning.update!(daily_cost:cost)
+      date=@earning.date
+      @monthly=Monthly.find_by(user_id:@user.id,year:date.year,month:date.month)
+      sum_cost=@monthly.earning.sum{|hash| hash[:daily_cost]}
+      @monthly.update!(sum_cost:sum_cost)
       redirect_to home_index_path(current_user.id)
       flash[:notice] = "編集しました"
     end
