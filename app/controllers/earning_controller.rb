@@ -1,18 +1,22 @@
 class EarningController < ApplicationController
   before_action :authenticate_user!
-  before_action :authenticate_current_user!, except: [:edit, :delete,:setting]
-  before_action :set_user, only: [:show, :index,:earn,:target]
-  before_action :set_monthly,except: [:edit, :delete,:setting]
-  before_action :authenticate_monthly_target,only: :index
+  before_action :authenticate_current_user!, except: [:edit, :delete,:setting,:show]
+  before_action :set_user, only: [:index,:earn,:target]
+  before_action :set_monthly,except: [:edit, :delete,:setting,:show]
+  # before_action :authenticate_monthly_target,only: :index
   def index
     date=Date.today
     @year=date.year
     @month=date.month
     @earnings=Earning.where(user_id:@user.id).date_month(@year, @month)
-    @attendance_left=@monthly.attendance_days-@earnings.length
+    if @monthly then
+      @attendance_left=@monthly.attendance_days-@earnings.length
+    end
   end
 
   def show
+    @earning=Earning.find(params[:id])
+    @user=@earning.user
   end
 
   def setting
@@ -21,17 +25,17 @@ class EarningController < ApplicationController
   end
 
 
-    def edit
-      Earning.find(params[:earning][:id]).update!(target:params[:earning][:target],revenue:params[:earning][:revenue],cost:params[:earning][:cost])
-      redirect_to home_index_path(current_user.id)
-      flash[:notice] = "編集しました"
-    end
+  def edit
+    Earning.find(params[:earning][:id]).update!(target:params[:earning][:target],revenue:params[:earning][:revenue])
+    redirect_to home_index_path(current_user.id)
+    flash[:notice] = "編集しました"
+  end
 
-    def delete
-      Earning.find(params[:id]).delete
-      redirect_to home_index_path(current_user.id)
-      flash[:notice] = "削除しました"
-    end
+  def delete
+    Earning.find(params[:id]).destroy!
+    redirect_to home_index_path(current_user.id)
+    flash[:notice] = "削除しました"
+  end
 
   def target
     date=Date.today
@@ -50,7 +54,14 @@ class EarningController < ApplicationController
 
   def earn
     date=Date.today
-    Earning.where(user_id:@user.id).last.update!(revenue:params[:revenue],cost:params[:cost])
+    earning=Earning.find_by(user_id:@user.id,date:date)
+    cost=[params[:travel_cost].to_i,params[:accommodation].to_i,params[:buying_price].to_i,
+          params[:for_tasting].to_i,params[:fixtures].to_i,params[:others].to_i].sum
+    cost_date=Cost.create!(user_id:@user.id,earning_id:earning.id,travel_cost:params[:travel_cost],
+                  accommodation:params[:accommodation],buying_price:params[:buying_price],
+                  for_tasting:params[:for_tasting],fixtures:params[:fixtures],others:params[:others]
+                )
+    earning.update!(user_id:@user.id,date:date,revenue:params[:revenue],daily_cost:cost)
     sum_cost=@monthly.sum_cost+params[:cost].to_i
     sum_earning=@monthly.sum_earning+params[:revenue].to_i
     @monthly.update!(sum_cost:sum_cost,sum_earning:sum_earning)

@@ -94,7 +94,11 @@
     <tbody>
       <%for i in 1..last_day(@year,@month) do%>
         <tr>
+          <%if daily_earning(@user,@earnings,@year,@month,i)%>
+            <th><%= link_to "#{i}日", earning_show_path(daily_earning(@user,@earnings,@year,@month,i).id)%></th>
+          <%else%>
             <th><%=i%>日</th>
+          <%end%>
             <td><%=target(daily_earning(@user,@earnings,@year,@month,i))%>円</td>
             <td><%=revenue(daily_earning(@user,@earnings,@year,@month,i))%>円</td>
             <%if achievement(daily_earning(@user,@earnings,@year,@month,i)) == 0 then%>

@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  travel_cost: 1
+  accommodation: 1
+  buying_price: 1
+  for_tasting: 1
+  fixtures: 1
+  others: 1
+
+two:
+  travel_cost: 1
+  accommodation: 1
+  buying_price: 1
+  for_tasting: 1
+  fixtures: 1
+  others: 1

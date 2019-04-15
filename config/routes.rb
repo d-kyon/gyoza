@@ -1,5 +1,11 @@
 Rails.application.routes.draw do
   root 'home#index'
+
+  #cost
+  get 'cost/setting/:id' => 'cost#setting',as:'cost_setting'
+  post 'cost/edit'
+
+
   #monthly
   get 'monthly/index/:id' => 'monthly#index',as:'monthly_index'
   get 'monthly/setting/:id' => 'monthly#setting',as:'monthly_setting'
@@ -28,11 +34,11 @@ Rails.application.routes.draw do
 
   #earning
   get 'earning/index/:id' => 'earning#index',as:'earning_index'
-  get 'earning/show' => 'earning#show',as:'earning_show'
+  get 'earning/show/:id' => 'earning#show',as:'earning_show'
   post 'earning/earn'
   post 'earning/target'
   get 'earning/setting/:id'  => 'earning#setting',as:'earning_setting'
-  delete 'earning/delete' => 'earning#delete',as:'earning_delete'
+  delete 'earning/delete/:id' => 'earning#delete',as:'earning_delete'
   post 'earning/edit'
 
   #attendance

@@ -8,7 +8,7 @@ module HomeHelper
   def daily_earning(user,earnings,year,month,day)
      date=Date.new(year.to_i,month.to_i,day)
     if Earning.find_by(date:date,user:user) then
-      return Earning.find_by(date:date)
+      return Earning.find_by(date:date,user:user)
     end
   end
 
@@ -21,7 +21,7 @@ module HomeHelper
   end
 
   def profit(earning)
-    profit = earning ? earning.revenue-earning.cost : 0 ;
+    profit = earning ? earning.revenue-earning.daily_cost : 0 ;
   end
 
   def achievement(earning)
@@ -29,7 +29,7 @@ module HomeHelper
   end
 
   def cost(earning)
-    cost = earning ? earning.cost : 0 ;
+    cost = earning ? earning.daily_cost : 0 ;
   end
 
   def last_day(year,month)

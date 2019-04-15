@@ -8,9 +8,8 @@
   <%= f.number_field :target, class: 'form-control'%>
   <label class="control-label" for="">売上</label>
   <%= f.number_field :revenue, class: 'form-control'%>
-  <label class="control-label" for="">費用</label>
-  <%= f.number_field :cost, class: 'form-control'%>
   <%= f.submit '編集', class: 'btn btn-success' %>
 <% end %>
+<%= button_to "削除",earning_delete_path(params[:id]), method: :delete, class:"btn btn-danger"  %>
 
-<%= button_to "削除",attendance_delete_path(id:params[:id]), method: :delete,class:"btn btn-danger"  %>
+<%= button_to "費用の詳細編集へ",cost_setting_path(id:@earning.id), method: :get,class:"btn btn-success"  %>

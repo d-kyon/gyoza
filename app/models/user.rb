@@ -4,6 +4,7 @@ class User < ApplicationRecord
   has_many :earning
   has_many :attendance
   has_many :monthly
+  has_many :costs
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_13_021844) do
+ActiveRecord::Schema.define(version: 2019_04_12_051343) do
 
   create_table "attendances", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "user_id"
@@ -24,13 +24,29 @@ ActiveRecord::Schema.define(version: 2019_03_13_021844) do
     t.index ["user_id"], name: "index_attendances_on_user_id"
   end
 
+  create_table "costs", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "earning_id"
+    t.integer "travel_cost", default: 0, null: false
+    t.integer "accommodation", default: 0, null: false
+    t.integer "buying_price", default: 0, null: false
+    t.integer "for_tasting", default: 0, null: false
+    t.integer "fixtures", default: 0, null: false
+    t.integer "others", default: 0, null: false
+    t.string "others_content", default: "", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["earning_id"], name: "index_costs_on_earning_id"
+    t.index ["user_id"], name: "index_costs_on_user_id"
+  end
+
   create_table "earnings", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "user_id"
     t.date "date"
     t.integer "revenue", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "cost", default: 0, null: false
+    t.integer "daily_cost", default: 0, null: false
     t.integer "target", default: 0, null: false
     t.bigint "monthly_id"
     t.index ["monthly_id"], name: "index_earnings_on_monthly_id"
@@ -66,6 +82,8 @@ ActiveRecord::Schema.define(version: 2019_03_13_021844) do
   end
 
   add_foreign_key "attendances", "users"
+  add_foreign_key "costs", "earnings"
+  add_foreign_key "costs", "users"
   add_foreign_key "earnings", "monthlies"
   add_foreign_key "earnings", "users"
   add_foreign_key "monthlies", "users"

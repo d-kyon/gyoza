@@ -1,5 +1,6 @@
 class Earning < ApplicationRecord
   belongs_to :user
+  has_many :cost, dependent: :destroy
   scope :date_between, -> from, to {
   if from.present? && to.present?
     where(date: from..to)
