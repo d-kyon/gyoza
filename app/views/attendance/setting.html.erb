@@ -1,6 +1,6 @@
 <h1 style="margin-top:100px;">設定</h1>
 
-<%= form_for(@attendance, url: attendance_edit_path, html: {method: 'POST'}) do |f| %>
+<%= form_for(@attendance, url: attendance_edit_path, html: {method: 'PATH'}) do |f| %>
 <%= f.hidden_field :id, :value => @attendance.id %>
   <label class="control-label" for="">日付</label>
   <p><%=@attendance.in_time.year%>年<%=@attendance.in_time.month%>月<%=@attendance.in_time.day%>日</p>

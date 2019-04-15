@@ -17,7 +17,7 @@
   <div class="col-sm-12 col-md-6">
     <div class="card img-thumbnail text-center">
       <div class="card-body px-2 py-3">
-        <h5 class="card-title"><%=employee.username%></h5>
+        <h5 class="card-title"><%= link_to employee.username, admin_user_path(employee.id)%></h5>
         <%= link_to "月ごと売上まとめ",report_index_path(id:employee.id),class:"btn btn-primary btn-sm"%>
         <%= link_to "勤怠,売上管理",home_index_path(id:employee.id),class:"btn btn-secondary btn-sm"%>
       </div><!-- /.card-body -->
