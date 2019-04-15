@@ -12,6 +12,6 @@ protected
   end
 
   def after_sign_in_path_for(resource)
-    attendance_index_path(id:current_user.id)
+    home_index_path(id:current_user.id)
   end
 end

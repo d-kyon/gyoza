@@ -2,12 +2,12 @@ class EarningController < ApplicationController
   before_action :authenticate_user!
   before_action :authenticate_current_user!, except: [:edit, :delete,:setting,:show]
   before_action :set_user, only: [:index,:earn,:target]
-  before_action :set_monthly,except: [:edit, :delete,:setting,:show]
+  before_action :set_monthly,except: [:edit,:delete,:setting,:show]
   # before_action :authenticate_monthly_target,only: :index
   def index
-    date=Date.today
-    @year=date.year
-    @month=date.month
+    @date=Date.today
+    @year=@date.year
+    @month=@date.month
     @earnings=Earning.where(user_id:@user.id).date_month(@year, @month)
     if @monthly then
       @attendance_left=@monthly.attendance_days-@earnings.length
@@ -26,13 +26,28 @@ class EarningController < ApplicationController
 
 
   def edit
+    @earning=Earning.find(params[:earning][:id])
+    @user=@earning.user
     Earning.find(params[:earning][:id]).update!(target:params[:earning][:target],revenue:params[:earning][:revenue])
+    date=Date.today
+    @monthly=Monthly.find_by(user_id:@user.id,year:date.year,month:date.month)
+    sum_target=@monthly.earning.sum{|hash| hash[:target]}
+    sum_earning=@monthly.earning.sum{|hash| hash[:revenue]}
+    @monthly.update!(sum_target:sum_target,sum_earning:sum_earning)
     redirect_to home_index_path(current_user.id)
     flash[:notice] = "編集しました"
   end
 
   def delete
+    @earning=Earning.find(params[:id])
+    @user=@earning.user
+    date=Date.today
+    @monthly=Monthly.find_by(user_id:@user.id,year:date.year,month:date.month)
     Earning.find(params[:id]).destroy!
+    sum_target=@monthly.earning.sum{|hash| hash[:target]}
+    sum_earning=@monthly.earning.sum{|hash| hash[:revenue]}
+    sum_cost=@monthly.earning.sum{|hash| hash[:daily_cost]}
+    @monthly.update!(sum_target:sum_target,sum_earning:sum_earning,sum_cost:sum_cost)
     redirect_to home_index_path(current_user.id)
     flash[:notice] = "削除しました"
   end
@@ -41,7 +56,7 @@ class EarningController < ApplicationController
     date=Date.today
     if @monthly.present? then
       Earning.create!(user_id:@user.id,target:params[:target],date:date,monthly_id:@monthly.id)
-      sum_target=@monthly.sum_target+params[:target].to_i
+      sum_target=@monthly.earning.sum{|hash| hash[:revenue]}
       @monthly.update!(sum_target:sum_target)
       flash[:notice] = "目標変更完了しました"
     else
@@ -62,8 +77,8 @@ class EarningController < ApplicationController
                   for_tasting:params[:for_tasting],fixtures:params[:fixtures],others:params[:others]
                 )
     earning.update!(user_id:@user.id,date:date,revenue:params[:revenue],daily_cost:cost)
-    sum_cost=@monthly.sum_cost+params[:cost].to_i
-    sum_earning=@monthly.sum_earning+params[:revenue].to_i
+    sum_cost=@monthly.earning.sum{|hash| hash[:cost]}
+    sum_earning=@monthly.earning.sum{|hash| hash[:earning]}
     @monthly.update!(sum_cost:sum_cost,sum_earning:sum_earning)
     flash[:notice] = "売上入力完了しました"
     redirect_to earning_index_path(@user.id)

@@ -1,48 +1,55 @@
-<h1 style="margin-top:100px;">売り上げ入力</h1>
 
-<%if @monthly then%>
+<%if Earning.find_by(date:@date,user:@user).present? && !targeted(@user,@date)%>
+  <p style="margin-top:100px;">本日の売上は入力済です。</p>
+  <%= button_to "編集する場合はこちら",earning_setting_path(Earning.find_by(date:@date,user:@user)), method: :get,class:"btn btn-primary", params:{year: @year,month:@month}%>
+<%else%>
 
-  <%if targeted(@user) then%>
-  <!-- 当日の目標を決めた人に出す画面 -->
-    <%= form_tag(earning_earn_path(id:current_user.id), method: :post) do%>
-      <p>売り上げ</p>
-      <%= number_field_tag :revenue ,0,class:"earning_form"%> 円 <br><br>
-      <h2>コスト</h2>
-      <p>交通費</p>
-      <%= number_field_tag :travel_cost ,0,class:"earning_form"%> 円 <br><br>
-      <p>宿泊費</p>
-      <%= number_field_tag :accommodation ,0,class:"earning_form"%> 円 <br><br>
-      <p>仕入れ金額</p>
-      <%= number_field_tag :buying_price ,0,class:"earning_form"%> 円 <br><br>
-      <p>試食用カップ</p>
-      <%= number_field_tag :for_tasting ,0,class:"earning_form"%> 円 <br><br>
-      <p>備品等</p>
-      <%= number_field_tag :fixtures ,0,class:"earning_form"%> 円 <br><br>
-      <p>その他の項目</p>
-      <%= number_field_tag :others ,0,class:"earning_form"%> 円 <br><br>
+  <%if @monthly then%>
+    <%if targeted(@user,@date) then%>
+    <!-- 当日の目標を決めた人に出す画面 -->
+    <h1 style="margin-top:100px;">本日の売上入力</h1>
+      <%= form_tag(earning_earn_path(id:current_user.id), method: :post) do%>
+        <p>売上</p>
+        <%= number_field_tag :revenue ,0,class:"earning_form"%> 円 <br><br>
+        <h2>コスト</h2>
+        <p>交通費</p>
+        <%= number_field_tag :travel_cost ,0,class:"earning_form"%> 円 <br><br>
+        <p>宿泊費</p>
+        <%= number_field_tag :accommodation ,0,class:"earning_form"%> 円 <br><br>
+        <p>仕入れ金額</p>
+        <%= number_field_tag :buying_price ,0,class:"earning_form"%> 円 <br><br>
+        <p>試食用カップ</p>
+        <%= number_field_tag :for_tasting ,0,class:"earning_form"%> 円 <br><br>
+        <p>備品等</p>
+        <%= number_field_tag :fixtures ,0,class:"earning_form"%> 円 <br><br>
+        <p>その他の項目</p>
+        <%= number_field_tag :others ,0,class:"earning_form"%> 円 <br><br>
+        <%= submit_tag "決定" ,class:"btn btn-dark attendance_btn",:id => "submit_btn"%>
+      <%end%>
+      <%targeted=true%>
+    <%else%>
+    <!-- 当日の目標を決めていない人に出す画面 -->
+    <h1 style="margin-top:100px;">本日の目標入力</h1>
+      <%= form_tag(earning_target_path(id:current_user.id), method: :post) do%>
+      <%if @monthly.target_monthly == @monthly.sum_target then%>
+        <p>目標達成！</p>
+      <%else%>
+        <p>月の売上目標まで<%=@monthly.target_monthly-@monthly.sum_earning%>円</p>
+        <%if @attendance_left > 0 then%>
+          <p>今月の出勤日数残り<%=@attendance_left%>日</p>
+          <p>1日あたり<%=(@monthly.target_monthly-@monthly.sum_earning)/@attendance_left%>円で達成！</p>
+        <%end%>
+      <%end%>
+      <p>今日の目標金額</p>
+      <%= number_field_tag :target ,0,class:"earning_form"%> 円 <br><br>
       <%= submit_tag "決定" ,class:"btn btn-dark attendance_btn",:id => "submit_btn"%>
     <%end%>
-    <%targeted=true%>
-  <%else%>
-  <!-- 当日の目標を決めていない人に出す画面 -->
-    <%= form_tag(earning_target_path(id:current_user.id), method: :post) do%>
-    <%if @monthly.target_monthly == @monthly.sum_target then%>
-      <p>目標達成！</p>
-    <%else%>
-      <p>月の売上目標まで<%=@monthly.target_monthly-@monthly.sum_earning%>円</p>
-      <%if @attendance_left > 0 then%>
-        <p>今月の出勤日数残り<%=@attendance_left%>日</p>
-        <p>1日あたり<%=(@monthly.target_monthly-@monthly.sum_earning)/@attendance_left%>円で達成！</p>
-      <%end%>
     <%end%>
-    <p>今日の目標金額</p>
-    <%= number_field_tag :target ,0,class:"earning_form"%> 円 <br><br>
-    <%= submit_tag "決定" ,class:"btn btn-dark attendance_btn",:id => "submit_btn"%>
+  <%else%>
+    <p>まずは月間目標を入力してください！</p>
+    <%= button_to "月間目標入力へ",monthly_index_path(id:@user.id), method: :get,class:"btn btn-primary", params:{year: @year,month:@month}%>
   <%end%>
-  <%end%>
-<%else%>
-  <p>まずは月間目標を入力してください！</p>
-  <%= button_to "月間目標入力へ",monthly_index_path(id:@user.id), method: :get,class:"btn btn-primary", params:{year: @year,month:@month}%>
+
 <%end%>
 <script>
 // if (document.getElementById("target")) {
