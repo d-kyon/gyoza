@@ -30,8 +30,11 @@
             <%else%>
               <td style="color:#ed4434"><%=achievement_monthly(monthly(@user,@year,i))%>円</td>
             <%end%>
-
-            <td><%=sum_cost(monthly(@user,@year,i))%>円</td>
+            <%if sum_cost(monthly(@user,@year,i)) == 0 then%>
+             <td>0円</td>
+            <%else%>
+              <td style="color:#ed4434">-<%=sum_cost(monthly(@user,@year,i))%>円</td>
+            <%end%>
 
             <%if sum_profit(monthly(@user,@year,i)) == 0 then%>
               <td><%=sum_profit(monthly(@user,@year,i))%>円</td>

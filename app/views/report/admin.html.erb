@@ -1,0 +1,50 @@
+<h1 style="margin-top:100px;"><従業員全体のレポート</h1>
+<%= form_tag(report_search_year_admin_path, method: :post) do%>
+<%= number_field_tag :year,@year%>年
+<%= submit_tag "検索" %>
+<%end%>
+
+<table class="table table-striped table-bordered"style="text-align:center;">
+    <thead>
+        <tr>
+            <th>月</th>
+            <th>目標売上</th>
+            <th>売上金額</th>
+            <th>目標との差</th>
+            <th>費用</th>
+            <th>利益</th>
+        </tr>
+    </thead>
+    <tbody>
+      <%for i in 1..12 do%>
+        <tr>
+            <th><%=i%>月</th>
+            <td><%=monthlies(@year,i).sum{|hash| hash[:target_monthly]}%>円</td>
+            <td><%=monthlies(@year,i).sum{|hash| hash[:sum_earning]}%>円</td>
+            <%if monthlies(@year,i).sum{|hash| hash[:sum_earning]}-monthlies(@year,i).sum{|hash| hash[:target_monthly]} == 0 then%>
+              <td>0円</td>
+            <%elsif monthlies(@year,i).sum{|hash| hash[:sum_earning]}-monthlies(@year,i).sum{|hash| hash[:target_monthly]} > 0%>
+              <td style="color:#88c736">+<%=monthlies(@year,i).sum{|hash| hash[:sum_earning]}-monthlies(@year,i).sum{|hash| hash[:target_monthly]}%>円</td>
+            <%else%>
+              <td style="color:#ed4434"><%=monthlies(@year,i).sum{|hash| hash[:sum_earning]}-monthlies(@year,i).sum{|hash| hash[:target_monthly]}%>円</td>
+            <%end%>
+
+            <%if monthlies(@year,i).sum{|hash| hash[:sum_cost]} == 0  then%>
+              <td>0円</td>
+            <%else%>
+              <td style="color:#ed4434">-<%=monthlies(@year,i).sum{|hash| hash[:sum_cost]}%>円</td>
+            <%end%>
+
+            <%if monthlies(@year,i).sum{|hash| hash[:sum_earning]}-monthlies(@year,i).sum{|hash| hash[:sum_cost]} == 0 then%>
+              <td>0円</td>
+            <%elsif monthlies(@year,i).sum{|hash| hash[:sum_earning]}-monthlies(@year,i).sum{|hash| hash[:sum_cost]} > 0%>
+              <td style="color:#88c736">+<%=monthlies(@year,i).sum{|hash| hash[:sum_earning]}-monthlies(@year,i).sum{|hash| hash[:sum_cost]}%>円</td>
+            <%else%>
+              <td style="color:#ed4434"><%=monthlies(@year,i).sum{|hash| hash[:sum_earning]}-monthlies(@year,i).sum{|hash| hash[:sum_cost]}%>円</td>
+            <%end%>
+
+
+        </tr>
+      <%end%>
+    </tbody>
+</table>

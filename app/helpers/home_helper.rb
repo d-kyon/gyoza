@@ -12,6 +12,13 @@ module HomeHelper
     end
   end
 
+  def daily_earnings(earnings,year,month,day)
+    date=Date.new(year.to_i,month.to_i,day)
+    if Earning.where(date:date) then
+      return Earning.where(date:date)
+    end
+  end
+
   def target(earning)
     target = earning ? earning.target : 0 ;
   end
