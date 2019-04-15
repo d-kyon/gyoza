@@ -5,6 +5,12 @@ module ReportHelper
     end
   end
 
+  def monthlies(year,month)
+    if Monthly.where(year:year,month:month) then
+      monthlies=Monthly.where(year:year,month:month)
+    end
+  end
+
   def sum_target(monthly)
     sum_target = monthly ? monthly.sum_target : 0 ;
   end

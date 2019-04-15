@@ -1,6 +1,6 @@
 class HomeController < ApplicationController
   before_action :authenticate_user!, only: :index
-  before_action :authenticate_current_user!
+  before_action :authenticate_current_user!,except: :admin
   before_action :set_user
   # before_action :authenticate_monthly_target,only: :index
   def index
@@ -20,6 +20,24 @@ class HomeController < ApplicationController
     @year=params[:year]
     @month=params[:month]
     render action: :index
+  end
+
+  def admin
+    if !@user.is_admin then
+      redirect_to home_index_path(@user.id)
+    end
+    @year=Date.today.year
+    @month=Date.today.month
+    if !@earnings then
+      @earnings=Earning.all.date_month(@year, @month).order(:date)
+    end
+  end
+
+  def search_month_admin
+    @year=params[:year]
+    @month=params[:month]
+    @earnings=Earning.all.date_month(params[:year], params[:month]).order(:date)
+    render action: :admin
   end
   private
   def set_user

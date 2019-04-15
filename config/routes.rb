@@ -19,6 +19,8 @@ Rails.application.routes.draw do
   get 'report/show'
   post 'report/search_year'
   get 'report/search_year'
+  get 'report/admin'
+  post 'report/search_year_admin'
 
   #admin
   get 'admin/index/:id' => 'admin#index',as:'admin_index'
@@ -54,6 +56,8 @@ Rails.application.routes.draw do
   get 'home/index/:id' => 'home#index',as:'home_index'
   get 'home/search_month'
   post 'home/search_month'
+  get 'home/admin'
+  post 'home/search_month_admin'
 
   devise_for :users
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html

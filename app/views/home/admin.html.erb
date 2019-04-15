@@ -1,0 +1,79 @@
+<h1 style="margin-top:100px;">管理者全体のまとめ</h1>
+<%= form_tag(home_search_month_admin_path(id:@user.id), method: :post) do%>
+<%= number_field_tag :year,@year%>年
+<%= number_field_tag :month,@month%>月
+<%= submit_tag "検索" %>
+<%end%>
+
+<table class="table table-striped" style="margin-top:50px;">
+  <tbody>
+    <tr>
+      <th scope="row">売上合計</th>
+      <td><%=Monthly.where(year:@year,month:@month).sum{|hash| hash[:sum_earning]}%>円</td>
+    </tr>
+    <tr>
+      <th scope="row">費用合計</th>
+      <%if Monthly.where(year:@year,month:@month).sum{|hash| hash[:sum_cost]} ==0 then%>
+        <td>0円</td>
+      <%else%>
+        <td style="color:#ed4434">-<%=Monthly.where(year:@year,month:@month).sum{|hash| hash[:sum_cost]}%>円</td>
+      <%end%>
+    </tr>
+    <tr>
+      <th scope="row">利益</th>
+      <%if Monthly.where(year:@year,month:@month).sum{|hash| hash[:sum_earning]}-Monthly.where(year:@year,month:@month).sum{|hash| hash[:sum_cost]} == 0 then%>
+        <td>0円</td>
+      <%elsif Monthly.where(year:@year,month:@month).sum{|hash| hash[:sum_earning]}-Monthly.where(year:@year,month:@month).sum{|hash| hash[:sum_cost]} > 0 then%>
+        <td style="color:#88c736">+<%=Monthly.where(year:@year,month:@month).sum{|hash| hash[:sum_earning]}-Monthly.where(year:@year,month:@month).sum{|hash| hash[:sum_cost]}%>円</td>
+      <%else%>
+        <td style="color:#ed4434"><%=Monthly.where(year:@year,month:@month).sum{|hash| hash[:sum_earning]}-Monthly.where(year:@year,month:@month).sum{|hash| hash[:sum_cost]}%>円</td>
+      <%end%>
+
+    </tr>
+  </tbody>
+</table>
+
+<h2>売上詳細</h2>
+
+<table class="table table-striped table-bordered"style="text-align:center;">
+    <thead>
+        <tr>
+            <th>日付</th>
+            <th>目標売上</th>
+            <th>売上金額</th>
+            <th>目標との差</th>
+            <th>費用</th>
+            <th>利益</th>
+        </tr>
+    </thead>
+    <tbody>
+      <%for i in 1..last_day(@year,@month) do%>
+        <tr>
+            <th><%=i%>日</th>
+            <td><%=daily_earnings(@earnings,@year,@month,i).sum{|hash| hash[:target]}%>円</td>
+            <td><%=daily_earnings(@earnings,@year,@month,i).sum{|hash| hash[:revenue]}%>円</td>
+            <%if daily_earnings(@earnings,@year,@month,i).sum{|hash| hash[:target]}-daily_earnings(@earnings,@year,@month,i).sum{|hash| hash[:revenue]} == 0 then%>
+              <td><%=daily_earnings(@earnings,@year,@month,i).sum{|hash| hash[:target]}-daily_earnings(@earnings,@year,@month,i).sum{|hash| hash[:revenue]}%>円</td>
+            <%elsif daily_earnings(@earnings,@year,@month,i).sum{|hash| hash[:target]}-daily_earnings(@earnings,@year,@month,i).sum{|hash| hash[:revenue]} > 0%>
+              <td style="color:#88c736">+<%=daily_earnings(@earnings,@year,@month,i).sum{|hash| hash[:target]}-daily_earnings(@earnings,@year,@month,i).sum{|hash| hash[:revenue]}%>円</td>
+            <%else%>
+              <td style="color:#ed4434"><%=daily_earnings(@earnings,@year,@month,i).sum{|hash| hash[:target]}-daily_earnings(@earnings,@year,@month,i).sum{|hash| hash[:revenue]}%>円</td>
+            <%end%>
+
+            <%if daily_earnings(@earnings,@year,@month,i).sum{|hash| hash[:daily_cost]} == 0%>
+              <td>0円</td>
+            <%else%>
+              <td style="color:#ed4434">-<%=daily_earnings(@earnings,@year,@month,i).sum{|hash| hash[:daily_cost]}%>円</td>
+            <%end%>
+
+            <%if daily_earnings(@earnings,@year,@month,i).sum{|hash| hash[:revenue]}-daily_earnings(@earnings,@year,@month,i).sum{|hash| hash[:daily_cost]} == 0 then%>
+              <td>0円</td>
+            <%elsif daily_earnings(@earnings,@year,@month,i).sum{|hash| hash[:revenue]}-daily_earnings(@earnings,@year,@month,i).sum{|hash| hash[:daily_cost]} > 0%>
+              <td style="color:#88c736">+<%=daily_earnings(@earnings,@year,@month,i).sum{|hash| hash[:revenue]}-daily_earnings(@earnings,@year,@month,i).sum{|hash| hash[:daily_cost]}%>円</td>
+            <%else%>
+              <td style="color:#ed4434"><%=daily_earnings(@earnings,@year,@month,i).sum{|hash| hash[:revenue]}-daily_earnings(@earnings,@year,@month,i).sum{|hash| hash[:daily_cost]}%>円</td>
+            <%end%>
+        </tr>
+      <%end%>
+    </tbody>
+</table>

@@ -1,7 +1,7 @@
 class ReportController < ApplicationController
   before_action :authenticate_user!
   before_action :authenticate_current_user!
-  before_action :set_user
+  before_action :set_user, except: [:admin,:search_year_admin]
   # before_action :authenticate_monthly_target,only: :index
 
   def index
@@ -18,6 +18,24 @@ class ReportController < ApplicationController
     @year=params[:year]
     render action: :index
   end
+
+  def admin
+    if !@user.is_admin then
+      redirect_to home_index_path(@user.id)
+    end
+    @user=User.find(current_user.id)
+    @year=Date.today.year
+    if !@earnings then
+      @earnings=Earning.all.date_year(@year).order(:date)
+    end
+  end
+
+  def search_year_admin
+    @earnings=Earning.all.date_year(params[:year]).order(:date)
+    @year=params[:year]
+    render action: :admin
+  end
+
   private
   def set_user
     @user = User.find(params[:id])

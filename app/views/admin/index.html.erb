@@ -3,6 +3,15 @@
 
 <h2>従業員リスト</h2>
 <div class="row">
+  <div class="col-sm-12 col-md-6">
+    <div class="card img-thumbnail text-center">
+      <div class="card-body px-2 py-3">
+        <h5 class="card-title">従業員合計</h5>
+        <%= link_to "月ごと売上まとめ",report_admin_path,class:"btn btn-primary btn-sm"%>
+        <%= link_to "勤怠,売上管理",home_admin_path,class:"btn btn-secondary btn-sm"%>
+      </div><!-- /.card-body -->
+    </div><!-- /.card -->
+  </div><!-- /.col-sm-6.col-md-3 -->
   <% @employees.each do |employee| %>
 
   <div class="col-sm-12 col-md-6">
