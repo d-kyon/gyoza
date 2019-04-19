@@ -4,6 +4,7 @@
 <%= number_field_tag :month,@month%>月
 <%= submit_tag "検索" %>
 <%end%>
+<%= link_to "CSV", home_index_path(format: :csv,id:@user.id,year:@year,month:@month,earnings:@earnings), class: "btn btn-primary" %>
 
 <table class="table table-striped" style="margin-top:50px;">
   <tbody>

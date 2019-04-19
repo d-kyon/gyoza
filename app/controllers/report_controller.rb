@@ -6,8 +6,16 @@ class ReportController < ApplicationController
 
   def index
     @year=Date.today.year
-    if !@earnings then
-      @earnings=Earning.where(user_id:@user.id).date_year(@year).order(:date)
+    @earnings=Earning.where(user_id:@user.id).date_year(@year).order(:date)
+    @monthlies = params[:year] ? Monthly.where(user_id:@user.id,year:params[:year]).order(:month) : Monthly.where(user_id:@user.id,year:@year).order(:month) ;
+    respond_to do |format|
+      format.html do
+          #html用の処理を書
+      end
+      format.csv do
+          #csv用の処理を書く
+          send_data render_to_string, filename: "#{@user.username}-#{params[:year]}.csv", type: :csv
+      end
     end
   end
 

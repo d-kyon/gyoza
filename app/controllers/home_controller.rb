@@ -6,11 +6,16 @@ class HomeController < ApplicationController
   def index
     @year=Date.today.year
     @month=Date.today.month
-    if !@attendances then
-      @attendances=Attendance.where(user_id:@user.id).date_month(@year,@month).order(:in_time)
-    end
-    if !@earnings then
-      @earnings=Earning.where(user_id:@user.id).date_month(@year, @month).order(:date)
+    @attendances= params[:year] ? Attendance.where(user_id:@user.id).date_month(params[:year],params[:month]).order(:in_time) : Attendance.where(user_id:@user.id).date_month(@year,@month).order(:in_time) ;
+    @earnings= params[:year] ? Earning.where(user_id:@user.id).date_month(params[:year], params[:month]).order(:date) : Earning.where(user_id:@user.id).date_month(@year, @month).order(:date) ;
+    respond_to do |format|
+      format.html do
+          #html用の処理を書
+      end
+      format.csv do
+          #csv用の処理を書く
+          send_data render_to_string, filename: "#{@user.username}-#{params[:year]}-#{params[:month]}.csv", type: :csv
+      end
     end
   end
 
