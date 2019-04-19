@@ -1,2 +1,50 @@
 <h1 style="margin-top:100px;"><%=@user.username%>さんの<%=@earning.date.year%>年<%=@earning.date.month%>月<%=@earning.date.day%>日の売上情報</h1>
-<%@earning.revenue%>
+<table class="table table-striped" style="margin-top:50px;">
+  <tbody>
+    <tr>
+      <th scope="row">売上金額</th>
+      <td><%=@earning.revenue%>円</td>
+    </tr>
+    <tr>
+      <th scope="row">目標金額</th>
+      <td><%=@earning.target%>円</td>
+    </tr>
+    <tr>
+      <th scope="row">費用合計</th>
+      <td><%=@earning.daily_cost%>円</td>
+    </tr>
+  </tbody>
+
+
+
+  <table class="table table-striped" style="margin-top:50px;">
+      <h1 style="margin-top:100px;">費用詳細</h1>
+    <tbody>
+      <tr>
+        <th scope="row">交通費</th>
+        <td><%=@cost.travel_cost%>円</td>
+      </tr>
+      <tr>
+        <th scope="row">宿泊費</th>
+        <td><%=@cost.accommodation%>円</td>
+      </tr>
+      <tr>
+        <th scope="row">仕入れ金額</th>
+        <td><%=@cost.buying_price%>円</td>
+      </tr>
+      <tr>
+        <th scope="row">試食用カップ</th>
+        <td><%=@cost.for_tasting%>円</td>
+      </tr>
+      <tr>
+        <th scope="row">備品等</th>
+        <td><%=@cost.fixtures%>円</td>
+      </tr>
+      <tr>
+        <th scope="row">その他</th>
+        <td><%=@cost.others%>円</td>
+      </tr>
+    </tbody>
+</table>
+
+<%= button_to "戻る",home_index_path(id:@user.id), method: :get,class:"btn btn-primary"%>

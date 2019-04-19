@@ -17,6 +17,7 @@ class EarningController < ApplicationController
   def show
     @earning=Earning.find(params[:id])
     @user=@earning.user
+    @cost=Cost.find_by(earning_id:params[:id])
   end
 
   def setting
