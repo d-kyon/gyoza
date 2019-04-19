@@ -1,5 +1,4 @@
 class ReportController < ApplicationController
-  before_action :authenticate_user!
   before_action :authenticate_current_user!
   before_action :set_user, except: [:admin,:search_year_admin]
   # before_action :authenticate_monthly_target,only: :index

@@ -1,5 +1,4 @@
 class CostController < ApplicationController
-  before_action :authenticate_user!
   before_action :authenticate_current_user!, except: [:edit, :delete,:setting]
   before_action :set_user, only: [:show, :index,:earn,:target]
   before_action :set_monthly,except: [:edit, :delete,:setting]

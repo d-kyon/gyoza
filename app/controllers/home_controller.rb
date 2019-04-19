@@ -1,5 +1,4 @@
 class HomeController < ApplicationController
-  before_action :authenticate_user!, only: :index
   before_action :authenticate_current_user!,except: :admin
   before_action :set_user
   # before_action :authenticate_monthly_target,only: :index
