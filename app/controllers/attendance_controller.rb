@@ -1,5 +1,4 @@
 class AttendanceController < ApplicationController
-  before_action :authenticate_user!
   before_action :authenticate_current_user!, except: [:edit, :delete,:setting]
   before_action :set_user, only: [:show, :index,:in_time,:out_time]
   before_action :set_time, only: [:in_time, :out_time]

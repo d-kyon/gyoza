@@ -1,5 +1,4 @@
 class EarningController < ApplicationController
-  before_action :authenticate_user!
   before_action :authenticate_current_user!, except: [:edit, :delete,:setting,:show]
   before_action :set_user, only: [:index,:earn,:target]
   before_action :set_monthly,except: [:edit,:delete,:setting,:show]

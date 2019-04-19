@@ -3,7 +3,6 @@ class AdminController < ApplicationController
   before_action :set_employee,only: [:show,:attendance,:earning,:earning_between,
                                       :attendance_between,:search_month,
                                       :attendance_search_month ,:earning_search_month,:user]
-  before_action :authenticate_user!
   before_action :authenticate_admin!
   before_action :authenticate_monthly_target,only: :index
   def index
