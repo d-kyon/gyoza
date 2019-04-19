@@ -3,6 +3,7 @@
 <%= number_field_tag :year,@year%>年
 <%= submit_tag "検索" %>
 <%end%>
+<%= link_to "CSV", report_index_path(format: :csv,id:@user.id,year:@year), class: "btn btn-primary" %>
 
 <table class="table table-striped table-bordered"style="text-align:center;">
     <thead>
