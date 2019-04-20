@@ -5,9 +5,12 @@ class EarningController < ApplicationController
   # before_action :authenticate_monthly_target,only: :index
   def index
     @date=Date.today
+    if @date.day > 20 then
+      @date = date >> 1
+    end
     @year=@date.year
     @month=@date.month
-    @earnings=Earning.where(user_id:@user.id).date_month(@year, @month)
+    @earnings=Earning.where(user_id:@user.id).date_month_20(@year, @month)
     if @monthly then
       @attendance_left=@monthly.attendance_days-@earnings.length
     end
@@ -60,7 +63,10 @@ class EarningController < ApplicationController
       @monthly.update!(sum_target:sum_target)
       flash[:notice] = "目標変更完了しました"
     else
-      Monthly.create!(user_id:@user.id,year:date.year,month:date.month,sum_target:params[:target])
+      if date.day > 20 then
+        month = (date >> 1).month
+      end
+      Monthly.create!(user_id:@user.id,year:date.year,month:month,sum_target:params[:target])
       Earning.create!(user_id:@user.id,target:params[:target],date:date,monthly_id:monthly.id)
       flash[:notice] = "目標入力完了しました"
     end
@@ -77,8 +83,8 @@ class EarningController < ApplicationController
                   for_tasting:params[:for_tasting],fixtures:params[:fixtures],others:params[:others]
                 )
     earning.update!(user_id:@user.id,date:date,revenue:params[:revenue],daily_cost:cost)
-    sum_cost=@monthly.earning.sum{|hash| hash[:cost]}
-    sum_earning=@monthly.earning.sum{|hash| hash[:earning]}
+    sum_cost=@monthly.earning.sum{|hash| hash[:daily_cost]}
+    sum_earning=@monthly.earning.sum{|hash| hash[:revenue]}
     @monthly.update!(sum_cost:sum_cost,sum_earning:sum_earning)
     flash[:notice] = "売上入力完了しました"
     redirect_to earning_index_path(@user.id)
@@ -100,14 +106,19 @@ class EarningController < ApplicationController
 
   def set_monthly
     date=Date.today
+    if date.day > 20 then
+      date = date >> 1
+    end
     if Monthly.where(user_id:@user.id,year:date.year,month:date.month).present? then
       @monthly=Monthly.find_by(user_id:@user.id,year:date.year,month:date.month)
     end
   end
   def authenticate_monthly_target
-    year=Date.today.year
-    month=Date.today.month
-    if Monthly.find_by(user_id:@user.id,year:year,month:month).nil? then
+    date=Date.today
+    if date.day > 20 then
+      date = date >> 1
+    end
+    if Monthly.find_by(user_id:@user.id,year:date.year,month:date.month).nil? then
       flash[:notice] = "月間目標を入力してください"
       redirect_to monthly_index_path(@user.id)
     end

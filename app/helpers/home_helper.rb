@@ -77,4 +77,8 @@ module HomeHelper
   def sum_profit(monthly)
     profit = monthly ? monthly.sum_earning-monthly.sum_cost : 0 ;
   end
+
+  def before_month(month)
+    before_month=12-(((-1*month.to_i)+1)%12)
+  end
 end

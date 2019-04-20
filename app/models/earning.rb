@@ -18,6 +18,14 @@ scope :date_month, -> year, month {
     where(date: from..to)
   end
 }
+scope :date_month_20, -> year, month {
+  if year.present? && month.present?
+    date = Date.new(year.to_i,month.to_i,21)
+    from = date << 1
+    to=date-1
+    where(date: from..to)
+  end
+}
 scope :date_year, -> year {
   if year.present?
     from = Date.new(year.to_i)

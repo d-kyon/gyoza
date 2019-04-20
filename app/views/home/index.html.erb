@@ -107,12 +107,48 @@
         </tr>
     </thead>
     <tbody>
-      <%for i in 1..last_day(@year,@month) do%>
+      <%for i in 21..last_day(@year,before_month(@month)) do%>
+        <tr>
+          <%if daily_earning(@user,@earnings,@year,before_month(@month),i)%>
+            <th><%= link_to "#{before_month(@month)}月#{i}日", earning_show_path(daily_earning(@user,@earnings,@year,before_month(@month),i).id)%></th>
+          <%else%>
+            <th><%="#{before_month(@month)}月#{i}"%>日</th>
+          <%end%>
+            <td><%=target(daily_earning(@user,@earnings,@year,before_month(@month),i))%>円</td>
+            <td><%=revenue(daily_earning(@user,@earnings,@year,before_month(@month),i))%>円</td>
+            <%if achievement(daily_earning(@user,@earnings,@year,before_month(@month),i)) == 0 then%>
+              <td><%=achievement(daily_earning(@user,@earnings,@year,before_month(@month),i))%>円</td>
+            <%elsif achievement(daily_earning(@user,@earnings,@year,before_month(@month),i)) > 0%>
+              <td style="color:#88c736">+<%=achievement(daily_earning(@user,@earnings,@year,before_month(@month),i))%>円</td>
+            <%else%>
+              <td style="color:#ed4434"><%=achievement(daily_earning(@user,@earnings,@year,before_month(@month),i))%>円</td>
+            <%end%>
+
+            <%if cost(daily_earning(@user,@earnings,@year,before_month(@month),i)) == 0%>
+              <td>0円</td>
+            <%else%>
+              <td style="color:#ed4434">-<%=cost(daily_earning(@user,@earnings,@year,before_month(@month),i))%>円</td>
+            <%end%>
+
+            <%if profit(daily_earning(@user,@earnings,@year,before_month(@month),i)) == 0 then%>
+              <td>0円</td>
+            <%elsif profit(daily_earning(@user,@earnings,@year,before_month(@month),i)) > 0%>
+              <td style="color:#88c736">+<%=profit(daily_earning(@user,@earnings,@year,before_month(@month),i))%>円</td>
+            <%else%>
+              <td style="color:#ed4434"><%=profit(daily_earning(@user,@earnings,@year,before_month(@month),i))%>円</td>
+            <%end%>
+
+            <%if daily_earning(@user,@earnings,@year,before_month(@month),i)%>
+              <td><%= button_to "編集",earning_setting_path(id:daily_earning(@user,@earnings,@year,before_month(@month),i).id), method: :get,class:"btn btn-success"  %></td>
+            <%end%>
+        </tr>
+      <%end%>
+      <%for i in 1..20 do%>
         <tr>
           <%if daily_earning(@user,@earnings,@year,@month,i)%>
-            <th><%= link_to "#{i}日", earning_show_path(daily_earning(@user,@earnings,@year,@month,i).id)%></th>
+            <th><%= link_to "#{@month}月#{i}日", earning_show_path(daily_earning(@user,@earnings,@year,@month,i).id)%></th>
           <%else%>
-            <th><%=i%>日</th>
+            <th><%="#{@month}月#{i}"%>日</th>
           <%end%>
             <td><%=target(daily_earning(@user,@earnings,@year,@month,i))%>円</td>
             <td><%=revenue(daily_earning(@user,@earnings,@year,@month,i))%>円</td>
