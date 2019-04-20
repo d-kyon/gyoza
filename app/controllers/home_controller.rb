@@ -5,8 +5,8 @@ class HomeController < ApplicationController
   def index
     @year=Date.today.year
     @month=Date.today.month
-    @attendances= params[:year] ? Attendance.where(user_id:@user.id).date_month(params[:year],params[:month]).order(:in_time) : Attendance.where(user_id:@user.id).date_month(@year,@month).order(:in_time) ;
-    @earnings= params[:year] ? Earning.where(user_id:@user.id).date_month(params[:year], params[:month]).order(:date) : Earning.where(user_id:@user.id).date_month(@year, @month).order(:date) ;
+    @attendances= params[:year] ? Attendance.where(user_id:@user.id).date_month_20(params[:year],params[:month]).order(:in_time) : Attendance.where(user_id:@user.id).date_month_20(@year,@month).order(:in_time) ;
+    @earnings= params[:year] ? Earning.where(user_id:@user.id).date_month_20(params[:year], params[:month]).order(:date) : Earning.where(user_id:@user.id).date_month_20(@year, @month).order(:date) ;
     respond_to do |format|
       format.html do
           #html用の処理を書
@@ -19,8 +19,8 @@ class HomeController < ApplicationController
   end
 
   def search_month
-    @attendances=Attendance.where(user_id:@user.id).date_month(params[:year],params[:month]).order(:in_time)
-    @earnings=Earning.where(user_id:@user.id).date_month(params[:year], params[:month]).order(:date)
+    @attendances=Attendance.where(user_id:@user.id).date_month_20(params[:year],params[:month]).order(:in_time)
+    @earnings=Earning.where(user_id:@user.id).date_month_20(params[:year], params[:month]).order(:date)
     @year=params[:year]
     @month=params[:month]
     render action: :index
@@ -33,14 +33,14 @@ class HomeController < ApplicationController
     @year=Date.today.year
     @month=Date.today.month
     if !@earnings then
-      @earnings=Earning.all.date_month(@year, @month).order(:date)
+      @earnings=Earning.all.date_month_20(@year, @month).order(:date)
     end
   end
 
   def search_month_admin
     @year=params[:year]
     @month=params[:month]
-    @earnings=Earning.all.date_month(params[:year], params[:month]).order(:date)
+    @earnings=Earning.all.date_month_20(params[:year], params[:month]).order(:date)
     render action: :admin
   end
   private

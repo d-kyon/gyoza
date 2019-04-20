@@ -46,7 +46,7 @@
     <%end%>
     <%end%>
   <%else%>
-    <p>まずは月間目標を入力してください！</p>
+    <p style="margin-top:100px;">まずは月間目標を入力してください！</p>
     <%= button_to "月間目標入力へ",monthly_index_path(id:@user.id), method: :get,class:"btn btn-primary", params:{year: @year,month:@month}%>
   <%end%>
 
