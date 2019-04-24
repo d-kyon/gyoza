@@ -5,11 +5,13 @@ class EarningController < ApplicationController
   # before_action :authenticate_monthly_target,only: :index
   def index
     @date=Date.today
-    if @date.day > 20 then
-      @date = date >> 1
-    end
     @year=@date.year
     @month=@date.month
+    if @date.day > 20 then
+      date = @date >> 1
+      @year=date.year
+      @month=date.month
+    end
     @earnings=Earning.where(user_id:@user.id).date_month_20(@year, @month)
     if @monthly then
       @attendance_left=@monthly.attendance_days-@earnings.length
@@ -31,8 +33,12 @@ class EarningController < ApplicationController
   def edit
     @earning=Earning.find(params[:earning][:id])
     @user=@earning.user
-    Earning.find(params[:earning][:id]).update!(target:params[:earning][:target],revenue:params[:earning][:revenue])
-    date=Date.today
+    Earning.find(params[:earning][:id]).update!(target:params[:earning][:target],revenue:params[:earning][:revenue],
+      expenses_image:params[:earning][:expenses_image],ordering_image:params[:earning][:ordering_image],others_image:params[:earning][:others_image])
+    date=@earning.date
+    if date.day > 20 then
+      date=date >> 1
+    end
     @monthly=Monthly.find_by(user_id:@user.id,year:date.year,month:date.month)
     sum_target=@monthly.earning.sum{|hash| hash[:target]}
     sum_earning=@monthly.earning.sum{|hash| hash[:revenue]}
@@ -44,7 +50,10 @@ class EarningController < ApplicationController
   def delete
     @earning=Earning.find(params[:id])
     @user=@earning.user
-    date=Date.today
+    date=@earning.date
+    if date.day > 20 then
+      date=date >> 1
+    end
     @monthly=Monthly.find_by(user_id:@user.id,year:date.year,month:date.month)
     Earning.find(params[:id]).destroy!
     sum_target=@monthly.earning.sum{|hash| hash[:target]}
@@ -86,6 +95,10 @@ class EarningController < ApplicationController
     sum_cost=@monthly.earning.sum{|hash| hash[:daily_cost]}
     sum_earning=@monthly.earning.sum{|hash| hash[:revenue]}
     @monthly.update!(sum_cost:sum_cost,sum_earning:sum_earning)
+    @year=date.year
+    @month=date.month
+    @day=date.day
+    earning.update!(expenses_image:params[:expenses_image],ordering_image:params[:ordering_image],others_image:params[:others_image])
     flash[:notice] = "売上入力完了しました"
     redirect_to earning_index_path(@user.id)
   end

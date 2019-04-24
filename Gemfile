@@ -69,3 +69,8 @@ gem 'jquery-rails'
 gem 'jquery-rails'
 gem 'bootstrap', '~> 4.3.1'
 gem 'geocoder'
+
+#uploader
+gem 'carrierwave'
+gem 'fog'
+gem 'rmagick'
