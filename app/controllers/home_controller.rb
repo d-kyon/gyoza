@@ -3,8 +3,14 @@ class HomeController < ApplicationController
   before_action :set_user
   # before_action :authenticate_monthly_target,only: :index
   def index
-    @year=Date.today.year
-    @month=Date.today.month
+    date=Date.today
+    @year=date.year
+    @month=date.month
+    if date.day > 20 then
+      date = date >> 1
+      @year=date.year
+      @month=date.month
+    end
     @attendances= params[:year] ? Attendance.where(user_id:@user.id).date_month_20(params[:year],params[:month]).order(:in_time) : Attendance.where(user_id:@user.id).date_month_20(@year,@month).order(:in_time) ;
     @earnings= params[:year] ? Earning.where(user_id:@user.id).date_month_20(params[:year], params[:month]).order(:date) : Earning.where(user_id:@user.id).date_month_20(@year, @month).order(:date) ;
     respond_to do |format|

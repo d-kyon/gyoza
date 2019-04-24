@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_15_070832) do
+ActiveRecord::Schema.define(version: 2019_04_20_045745) do
 
   create_table "attendances", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "user_id"
@@ -49,6 +49,9 @@ ActiveRecord::Schema.define(version: 2019_04_15_070832) do
     t.integer "daily_cost", default: 0, null: false
     t.integer "target", default: 0, null: false
     t.bigint "monthly_id"
+    t.string "expenses_image"
+    t.string "ordering_image"
+    t.string "others_image"
     t.index ["monthly_id"], name: "index_earnings_on_monthly_id"
     t.index ["user_id"], name: "index_earnings_on_user_id"
   end

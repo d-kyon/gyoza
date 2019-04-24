@@ -47,4 +47,11 @@
     </tbody>
 </table>
 
+<h2>経費画像</h2>
+<%=image_tag @earning.expenses_image.to_s%>
+<h2>発注画像</h2>
+<%=image_tag @earning.ordering_image.to_s%>
+<h2>その他画像</h2>
+<%=image_tag @earning.others_image.to_s%>
+
 <%= button_to "戻る",home_index_path(id:@user.id), method: :get,class:"btn btn-primary"%>

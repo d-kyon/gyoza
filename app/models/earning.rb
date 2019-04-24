@@ -1,6 +1,9 @@
 class Earning < ApplicationRecord
   belongs_to :user
   has_many :cost, dependent: :destroy
+  mount_uploader :expenses_image, ImageUploader
+  mount_uploader :ordering_image, ImageUploader
+  mount_uploader :others_image, ImageUploader
   scope :date_between, -> from, to {
   if from.present? && to.present?
     where(date: from..to)
