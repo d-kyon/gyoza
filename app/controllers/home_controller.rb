@@ -27,8 +27,8 @@ class HomeController < ApplicationController
   def search_month
     @attendances=Attendance.where(user_id:@user.id).date_month_20(params[:year],params[:month]).order(:in_time)
     @earnings=Earning.where(user_id:@user.id).date_month_20(params[:year], params[:month]).order(:date)
-    @year=params[:year]
-    @month=params[:month]
+    @year=params[:year].to_i
+    @month=params[:month].to_i
     render action: :index
   end
 
@@ -44,8 +44,8 @@ class HomeController < ApplicationController
   end
 
   def search_month_admin
-    @year=params[:year]
-    @month=params[:month]
+    @year=params[:year].to_i
+    @month=params[:month].to_i
     @earnings=Earning.all.date_month_20(params[:year], params[:month]).order(:date)
     render action: :admin
   end

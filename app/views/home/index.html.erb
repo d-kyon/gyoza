@@ -140,6 +140,8 @@
 
             <%if daily_earning(@user,@earnings,@year,before_month(@month),i)%>
               <td><%= button_to "編集",earning_setting_path(id:daily_earning(@user,@earnings,@year,before_month(@month),i).id), method: :get,class:"btn btn-success"  %></td>
+            <%else%>
+              <td><%= button_to "売上登録",earning_index_path(id:@user.id), method: :get,class:"btn btn-primary", params:{date:Date.new(@year,@month,i)}  %></td>
             <%end%>
         </tr>
       <%end%>
@@ -176,6 +178,8 @@
 
             <%if daily_earning(@user,@earnings,@year,@month,i)%>
               <td><%= button_to "編集",earning_setting_path(id:daily_earning(@user,@earnings,@year,@month,i).id), method: :get,class:"btn btn-success"  %></td>
+            <%else%>
+              <td><%= button_to "売上登録",earning_index_path(id:@user.id), method: :get,class:"btn btn-primary", params:{date:Date.new(@year,@month,i)}  %></td>
             <%end%>
         </tr>
       <%end%>
