@@ -4,7 +4,20 @@ class EarningController < ApplicationController
   before_action :set_monthly,except: [:edit,:delete,:setting,:show]
   # before_action :authenticate_monthly_target,only: :index
   def index
-    @date=Date.today
+    if params[:date].present? then
+      @date=Date.parse(params[:date])
+      if @date.day > 20 then
+        @date = @date<<1
+      end
+      if @monthly.present? then
+        Earning.create!(user_id:@user.id,target:0,date:@date,monthly_id:@monthly.id)
+      else
+        monthly=Monthly.create!(user_id:@user.id,year:@date.year,month:@date.month,sum_target:0)
+        Earning.create!(user_id:@user.id,target:0,date:@date,monthly_id:monthly.id)
+      end
+    else
+      @date=Date.today
+    end
     @year=@date.year
     @month=@date.month
     if @date.day > 20 then
@@ -65,12 +78,12 @@ class EarningController < ApplicationController
   end
 
   def target
-    date=Date.today
+    date=Date.parse(params[:date])
     if @monthly.present? then
       Earning.create!(user_id:@user.id,target:params[:target],date:date,monthly_id:@monthly.id)
       sum_target=@monthly.earning.sum{|hash| hash[:revenue]}
       @monthly.update!(sum_target:sum_target)
-      flash[:notice] = "目標変更完了しました"
+      flash[:notice] = "目標入力完了しました"
     else
       if date.day > 20 then
         month = (date >> 1).month
@@ -83,7 +96,7 @@ class EarningController < ApplicationController
   end
 
   def earn
-    date=Date.today
+    date=Date.parse(params[:date])
     earning=Earning.find_by(user_id:@user.id,date:date)
     cost=[params[:travel_cost].to_i,params[:accommodation].to_i,params[:buying_price].to_i,
           params[:for_tasting].to_i,params[:fixtures].to_i,params[:others].to_i].sum
@@ -100,7 +113,7 @@ class EarningController < ApplicationController
     @day=date.day
     earning.update!(expenses_image:params[:expenses_image],ordering_image:params[:ordering_image],others_image:params[:others_image])
     flash[:notice] = "売上入力完了しました"
-    redirect_to earning_index_path(@user.id)
+    redirect_to home_index_path(@user.id)
   end
 
 
@@ -118,18 +131,26 @@ class EarningController < ApplicationController
   end
 
   def set_monthly
-    date=Date.today
-    if date.day > 20 then
-      date = date >> 1
+    if params[:date].present? then
+      date=Date.parse(params[:date])
+    else
+      date=Date.today
+      if date.day > 20 then
+        date = date >> 1
+      end
     end
     if Monthly.where(user_id:@user.id,year:date.year,month:date.month).present? then
       @monthly=Monthly.find_by(user_id:@user.id,year:date.year,month:date.month)
     end
   end
   def authenticate_monthly_target
-    date=Date.today
-    if date.day > 20 then
-      date = date >> 1
+    if params[:date].present? then
+      date=Date.parse(params[:date])
+    else
+      date=Date.today
+      if date.day > 20 then
+        date = date >> 1
+      end
     end
     if Monthly.find_by(user_id:@user.id,year:date.year,month:date.month).nil? then
       flash[:notice] = "月間目標を入力してください"

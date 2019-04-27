@@ -1,12 +1,12 @@
 <%if Earning.find_by(date:@date,user:@user).present? && !targeted(@user,@date)%>
-  <p style="margin-top:100px;">本日の売上は入力済です。</p>
+  <p style="margin-top:100px;"><%=@date.year%>年<%=@date.month%>月<%=@date.day%>日の売上は入力済です。</p>
   <%= button_to "編集する場合はこちら",earning_setting_path(Earning.find_by(date:@date,user:@user)), method: :get,class:"btn btn-primary", params:{year: @year,month:@month}%>
 <%else%>
 
   <%if @monthly then%>
-    <%if targeted(@user,@date) then%>
+    <%if targeted(@user,@date)  || @date!=Date.today then%>
     <!-- 当日の目標を決めた人に出す画面 -->
-    <h1 style="margin-top:100px;">本日の売上入力</h1>
+    <h1 style="margin-top:100px;"><%=@date.year%>年<%=@date.month%>月<%=@date.day%>日の売上入力</h1>
       <%= form_tag(earning_earn_path(id:current_user.id), method: :post,:multipart => true) do%>
         <p>売上</p>
         <%= number_field_tag :revenue ,0,class:"earning_form"%> 円 <br><br>
@@ -29,12 +29,13 @@
         <%= number_field_tag :fixtures ,0,class:"earning_form"%> 円 <br><br>
         <p>その他の項目</p>
         <%= number_field_tag :others ,0,class:"earning_form"%> 円 <br><br>
+        <%= hidden_field_tag :date, :value => @date%>
         <%= submit_tag "決定" ,class:"btn btn-dark attendance_btn",:id => "submit_btn"%>
       <%end%>
       <%targeted=true%>
     <%else%>
     <!-- 当日の目標を決めていない人に出す画面 -->
-    <h1 style="margin-top:100px;">本日の目標入力</h1>
+    <h1 style="margin-top:100px;"><%=@date.year%>年<%=@date.month%>月<%=@date.day%>日の目標入力</h1>
       <%= form_tag(earning_target_path(id:current_user.id), method: :post) do%>
       <%if @monthly.target_monthly == @monthly.sum_target then%>
         <p>目標達成！</p>
@@ -47,6 +48,7 @@
       <%end%>
       <p>今日の目標金額</p>
       <%= number_field_tag :target ,0,class:"earning_form"%> 円 <br><br>
+      <%= hidden_field_tag :date, :value => @date%>
       <%= submit_tag "決定" ,class:"btn btn-dark attendance_btn",:id => "submit_btn"%>
     <%end%>
     <%end%>
