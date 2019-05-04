@@ -22,7 +22,11 @@
     </tr>
     <tr>
       <th scope="row">売上合計</th>
-      <td><%=sum_earning(monthly(@user,@year,@month))%>円</td>
+      <%if Monthly.find_by(user_id:@user.id,year:@year,month:@month) then%>
+        <td><%=Monthly.find_by(user_id:@user.id,year:@year,month:@month).sum_earning%>円</td>
+      <%else%>
+        <td>月間目標を入力してください。</td>
+      <%end%>
     </tr>
     <tr>
       <th scope="row">月間売上目標</th>
@@ -109,39 +113,39 @@
     <tbody>
       <%for i in 21..last_day(@year,before_month(@month)) do%>
         <tr>
-          <%if daily_earning(@user,@earnings,@year,before_month(@month),i)%>
-            <th><%= link_to "#{before_month(@month)}月#{i}日", earning_show_path(daily_earning(@user,@earnings,@year,before_month(@month),i).id)%></th>
+          <%if daily_earning(@user,@earnings,before_year(@year,@month),before_month(@month),i)%>
+            <th><%= link_to "#{before_month(@month)}月#{i}日", earning_show_path(daily_earning(@user,@earnings,before_year(@year,@month),before_month(@month),i).id)%></th>
           <%else%>
             <th><%="#{before_month(@month)}月#{i}"%>日</th>
           <%end%>
-            <td><%=target(daily_earning(@user,@earnings,@year,before_month(@month),i))%>円</td>
-            <td><%=revenue(daily_earning(@user,@earnings,@year,before_month(@month),i))%>円</td>
-            <%if achievement(daily_earning(@user,@earnings,@year,before_month(@month),i)) == 0 then%>
-              <td><%=achievement(daily_earning(@user,@earnings,@year,before_month(@month),i))%>円</td>
-            <%elsif achievement(daily_earning(@user,@earnings,@year,before_month(@month),i)) > 0%>
-              <td style="color:#88c736">+<%=achievement(daily_earning(@user,@earnings,@year,before_month(@month),i))%>円</td>
+            <td><%=target(daily_earning(@user,@earnings,before_year(@year,@month),before_month(@month),i))%>円</td>
+            <td><%=revenue(daily_earning(@user,@earnings,before_year(@year,@month),before_month(@month),i))%>円</td>
+            <%if achievement(daily_earning(@user,@earnings,before_year(@year,@month),before_month(@month),i)) == 0 then%>
+              <td><%=achievement(daily_earning(@user,@earnings,before_year(@year,@month),before_month(@month),i))%>円</td>
+            <%elsif achievement(daily_earning(@user,@earnings,before_year(@year,@month),before_month(@month),i)) > 0%>
+              <td style="color:#88c736">+<%=achievement(daily_earning(@user,@earnings,before_year(@year,@month),before_month(@month),i))%>円</td>
             <%else%>
-              <td style="color:#ed4434"><%=achievement(daily_earning(@user,@earnings,@year,before_month(@month),i))%>円</td>
+              <td style="color:#ed4434"><%=achievement(daily_earning(@user,@earnings,before_year(@year,@month),before_month(@month),i))%>円</td>
             <%end%>
 
-            <%if cost(daily_earning(@user,@earnings,@year,before_month(@month),i)) == 0%>
+            <%if cost(daily_earning(@user,@earnings,before_year(@year,@month),before_month(@month),i)) == 0%>
               <td>0円</td>
             <%else%>
-              <td style="color:#ed4434">-<%=cost(daily_earning(@user,@earnings,@year,before_month(@month),i))%>円</td>
+              <td style="color:#ed4434">-<%=cost(daily_earning(@user,@earnings,before_year(@year,@month),before_month(@month),i))%>円</td>
             <%end%>
 
-            <%if profit(daily_earning(@user,@earnings,@year,before_month(@month),i)) == 0 then%>
+            <%if profit(daily_earning(@user,@earnings,before_year(@year,@month),before_month(@month),i)) == 0 then%>
               <td>0円</td>
-            <%elsif profit(daily_earning(@user,@earnings,@year,before_month(@month),i)) > 0%>
-              <td style="color:#88c736">+<%=profit(daily_earning(@user,@earnings,@year,before_month(@month),i))%>円</td>
+            <%elsif profit(daily_earning(@user,@earnings,before_year(@year,@month),before_month(@month),i)) > 0%>
+              <td style="color:#88c736">+<%=profit(daily_earning(@user,@earnings,before_year(@year,@month),before_month(@month),i))%>円</td>
             <%else%>
-              <td style="color:#ed4434"><%=profit(daily_earning(@user,@earnings,@year,before_month(@month),i))%>円</td>
+              <td style="color:#ed4434"><%=profit(daily_earning(@user,@earnings,before_year(@year,@month),before_month(@month),i))%>円</td>
             <%end%>
 
-            <%if daily_earning(@user,@earnings,@year,before_month(@month),i)%>
-              <td><%= button_to "編集",earning_setting_path(id:daily_earning(@user,@earnings,@year,before_month(@month),i).id), method: :get,class:"btn btn-success"  %></td>
+            <%if daily_earning(@user,@earnings,before_year(@year,@month),before_month(@month),i)%>
+              <td><%= button_to "編集",earning_setting_path(id:daily_earning(@user,@earnings,before_year(@year,@month),before_month(@month),i).id), method: :get,class:"btn btn-success"  %></td>
             <%else%>
-              <td><%= button_to "売上登録",earning_index_path(id:@user.id), method: :get,class:"btn btn-primary", params:{date:Date.new(@year,@month,i)}  %></td>
+              <td><%= button_to "売上登録",earning_index_path(id:@user.id), method: :get,class:"btn btn-primary", params:{date:Date.new(before_year(@year,@month),before_month(@month),i)}  %></td>
             <%end%>
         </tr>
       <%end%>

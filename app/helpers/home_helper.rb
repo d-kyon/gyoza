@@ -81,4 +81,8 @@ module HomeHelper
   def before_month(month)
     before_month=12-(((-1*month.to_i)+1)%12)
   end
+
+  def before_year(year,month)
+    before_year= (12%month)==0 ? year-1 : year ; 
+  end
 end

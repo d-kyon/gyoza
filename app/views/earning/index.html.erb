@@ -29,7 +29,7 @@
         <%= number_field_tag :fixtures ,0,class:"earning_form"%> 円 <br><br>
         <p>その他の項目</p>
         <%= number_field_tag :others ,0,class:"earning_form"%> 円 <br><br>
-        <%= hidden_field_tag :date, :value => @date%>
+        <%= hidden_field_tag :date,@date%>
         <%= submit_tag "決定" ,class:"btn btn-dark attendance_btn",:id => "submit_btn"%>
       <%end%>
       <%targeted=true%>
