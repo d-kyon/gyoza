@@ -20,10 +20,13 @@ class CostController < ApplicationController
               params[:cost][:for_tasting].to_i,params[:cost][:fixtures].to_i,params[:cost][:others].to_i].sum
       @earning.update!(daily_cost:cost)
       date=@earning.date
+      if date.day > 20 then
+        date=date >> 1
+      end
       @monthly=Monthly.find_by(user_id:@user.id,year:date.year,month:date.month)
       sum_cost=@monthly.earning.sum{|hash| hash[:daily_cost]}
       @monthly.update!(sum_cost:sum_cost)
-      redirect_to home_index_path(current_user.id)
+      redirect_to home_search_month_path(id:@user.id,year:date.year,month:date.month)
       flash[:notice] = "編集しました"
     end
   private
