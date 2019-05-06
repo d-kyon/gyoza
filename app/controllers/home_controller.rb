@@ -29,6 +29,10 @@ class HomeController < ApplicationController
     @earnings=Earning.where(user_id:@user.id).date_month_20(params[:year], params[:month]).order(:date)
     @year=params[:year].to_i
     @month=params[:month].to_i
+    if params[:year].nil? then
+      @year=Date.today.year
+      @month=Date.today.month
+    end
     render action: :index
   end
 
@@ -46,7 +50,11 @@ class HomeController < ApplicationController
   def search_month_admin
     @year=params[:year].to_i
     @month=params[:month].to_i
-    @earnings=Earning.all.date_month_20(params[:year], params[:month]).order(:date)
+    if params[:year].nil? then
+      @year=Date.today.year
+      @month=Date.today.month
+    end
+    @earnings=Earning.all.date_month_20(@year, @month).order(:date)
     render action: :admin
   end
   private

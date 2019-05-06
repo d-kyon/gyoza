@@ -46,7 +46,7 @@ class EarningController < ApplicationController
     sum_target=@monthly.earning.sum{|hash| hash[:target]}
     sum_earning=@monthly.earning.sum{|hash| hash[:revenue]}
     @monthly.update!(sum_target:sum_target,sum_earning:sum_earning)
-    redirect_to home_index_path(current_user.id)
+    redirect_to home_search_month_path(id:@user.id,year:date.year,month:date.month)
     flash[:notice] = "編集しました"
   end
 
@@ -58,12 +58,12 @@ class EarningController < ApplicationController
       date=date >> 1
     end
     @monthly=Monthly.find_by(user_id:@user.id,year:date.year,month:date.month)
-    Earning.find(params[:id]).destroy!
+    Earning.find(params[:id]).destroy
     sum_target=@monthly.earning.sum{|hash| hash[:target]}
     sum_earning=@monthly.earning.sum{|hash| hash[:revenue]}
     sum_cost=@monthly.earning.sum{|hash| hash[:daily_cost]}
     @monthly.update!(sum_target:sum_target,sum_earning:sum_earning,sum_cost:sum_cost)
-    redirect_to home_index_path(current_user.id)
+    redirect_to home_search_month_path(id:@user.id,year:date.year,month:date.month)
     flash[:notice] = "削除しました"
   end
 
@@ -87,11 +87,16 @@ class EarningController < ApplicationController
 
   def earn
     date=Date.parse(params[:date])
+    earning=Earning.find_by(user_id:@user.id,date:params[:date])
     if @monthly.present? then
-      Earning.create!(user_id:@user.id,target:0,date:date,monthly_id:@monthly.id)
+      if earning.nil? then
+        Earning.create!(user_id:@user.id,target:0,date:date,monthly_id:@monthly.id)
+      end
     else
       monthly=Monthly.create!(user_id:@user.id,year:@year,month:@month,sum_target:0)
-      Earning.create!(user_id:@user.id,target:0,date:date,monthly_id:monthly.id)
+      if earning.nil? then
+        Earning.create!(user_id:@user.id,target:0,date:date,monthly_id:monthly.id)
+      end
     end
     earning=Earning.find_by(user_id:@user.id,date:date)
     cost=[params[:travel_cost].to_i,params[:accommodation].to_i,params[:buying_price].to_i,
@@ -104,12 +109,15 @@ class EarningController < ApplicationController
     sum_cost=@monthly.earning.sum{|hash| hash[:daily_cost]}
     sum_earning=@monthly.earning.sum{|hash| hash[:revenue]}
     @monthly.update!(sum_cost:sum_cost,sum_earning:sum_earning)
-    @year=date.year
-    @month=date.month
-    @day=date.day
+    month=date.month
+    year=date.year
+    if date.day > 20 then
+      month = (date >> 1).month
+      year = (date >> 1).year
+    end
     earning.update!(expenses_image:params[:expenses_image],ordering_image:params[:ordering_image],others_image:params[:others_image])
     flash[:notice] = "売上入力完了しました"
-    redirect_to home_index_path(@user.id)
+    redirect_to home_search_month_path(id:@user.id,year:year,month:month)
   end
 
 

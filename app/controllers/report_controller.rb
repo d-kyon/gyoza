@@ -27,6 +27,7 @@ class ReportController < ApplicationController
   end
 
   def admin
+    @user=current_user
     if !@user.is_admin then
       redirect_to home_index_path(@user.id)
     end
