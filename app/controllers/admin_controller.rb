@@ -4,7 +4,7 @@ class AdminController < ApplicationController
                                       :attendance_between,:search_month,
                                       :attendance_search_month ,:earning_search_month,:user]
   before_action :authenticate_admin!
-  before_action :authenticate_monthly_target,only: :index
+  # before_action :authenticate_monthly_target,only: :index
   def index
     @employees=User.all
   end

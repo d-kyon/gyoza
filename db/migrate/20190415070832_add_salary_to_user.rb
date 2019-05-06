@@ -1,5 +1,5 @@
 class AddSalaryToUser < ActiveRecord::Migration[5.2]
   def change
-    add_column :users, :salary, :integer, index: true, foreign_key: true
+    add_column :users, :salary, :integer,null: false, default: 0
   end
 end
